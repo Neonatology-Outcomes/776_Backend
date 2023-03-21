@@ -1,7 +1,5 @@
 package com.neonatal.backend.rules;
 
-import com.neonatal.backend.rules.Rule;
-import com.neonatal.backend.rules.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +16,9 @@ public class RulesController {
     private RulesService rulesService;
 
     @GetMapping
-    public List<Rule> rules(){ return rulesService.getAll(); }
+    public List<Rule> rules(){ return rulesService.getAll(); } // Get all Rules
 
     @PostMapping
-    public Rule addRule(@RequestBody Rule rule){ return rulesService.add(rule); }
+    public Rule addRule(@RequestBody Rule rule){ return rulesService.add(rule); } // Input new rule to the database
 
 }
