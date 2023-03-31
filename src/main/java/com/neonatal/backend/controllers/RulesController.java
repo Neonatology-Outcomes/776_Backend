@@ -1,9 +1,12 @@
 package com.neonatal.backend.controllers;
 
 import com.neonatal.backend.entities.Assessment;
+import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.repositories.AssessmentRepository;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,4 +29,14 @@ public class RulesController {
     @PostMapping
     public Assessment addRule(@RequestBody Assessment assessment){ return assessmentRepository.save(assessment); } // Input new rule to the database
 
+
+	@RequestMapping(value = "/saveBundle/", method = RequestMethod.POST)
+	public ResponseEntity<ParentBundlePOJO> saveBundle(@RequestBody ParentBundlePOJO parentBundlePOJO) {
+
+		System.out.println("hello");
+		ParentBundlePOJO returnObj = rulesService.saveBundle(parentBundlePOJO);
+		System.out.println("bye 1");
+		return new ResponseEntity<ParentBundlePOJO>(returnObj, HttpStatus.OK);
+	}
+	
 }
