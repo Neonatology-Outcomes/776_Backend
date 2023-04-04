@@ -2,6 +2,8 @@ package com.neonatal.backend.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,7 +16,8 @@ public class Exceptionlist {
 
     @Id
     @Column(name = "exceptionid")
-    private int exceptionid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long exceptionid;
 
     @Column(name = "exceptiontype")
     private String exceptiontype;
@@ -28,7 +31,7 @@ public class Exceptionlist {
     @Column(name = "exceptionmessage")
     private String exceptionmessage;
 
-    public Exceptionlist(int exceptionid, String exceptiontype, String loggedinuser, String uhid,
+    public Exceptionlist(Long exceptionid, String exceptiontype, String loggedinuser, String uhid,
                          String exceptionmessage) {
         this.exceptionid = exceptionid;
         this.exceptiontype = exceptiontype;
@@ -41,11 +44,11 @@ public class Exceptionlist {
 
     }
 
-    public int getExceptionid() {
+    public Long getExceptionid() {
         return exceptionid;
     }
 
-    public void setExceptionid(int exceptionid) {
+    public void setExceptionid(Long exceptionid) {
         this.exceptionid = exceptionid;
     }
 
