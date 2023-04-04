@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -17,7 +14,8 @@ public class Criteria_Object {
 
     @Id
     @Column(name = "criteria_object_id")
-    private BigInteger criteria_object_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long criteria_object_id;
 
     @Column(name = "criteria_bundles_id")
     private BigInteger criteria_bundles_id;
@@ -55,7 +53,7 @@ public class Criteria_Object {
     @Column(name = "bin")
     private String bin;
 
-    public Criteria_Object(BigInteger criteria_object_id, BigInteger criteria_bundles_id, String category_name,
+    public Criteria_Object(long criteria_object_id, BigInteger criteria_bundles_id, String category_name,
                            String field_name, String type, BigDecimal from_value, BigDecimal to_value, String unit,
                            String time, String medicine, String vent, String or_condition, String bin) {
         this.criteria_object_id = criteria_object_id;
@@ -77,11 +75,11 @@ public class Criteria_Object {
 
     }
 
-    public BigInteger getCriteria_object_id() {
+    public long getCriteria_object_id() {
         return criteria_object_id;
     }
 
-    public void setCriteria_object_id(BigInteger criteria_object_id) {
+    public void setCriteria_object_id(long criteria_object_id) {
         this.criteria_object_id = criteria_object_id;
     }
 

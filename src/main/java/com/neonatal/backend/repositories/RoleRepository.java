@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * on the Role table with ID type of Integer
  */
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }

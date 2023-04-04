@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -17,22 +14,17 @@ public class Recommendation_Object {
 
     @Id
     @Column(name = "recommendation_object_id")
-    private BigInteger recommendation_object_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long recommendation_object_id;
 
-    @Column(name = "recommendation_bundles_id")
-    private BigInteger recommendation_bundles_id;
+    @Column(name = "recommendation_bundle_id")
+    private BigInteger recommendation_bundle_id;
 
     @Column(name = "category_name")
     private String category_name;
 
     @Column(name = "field_name")
     private String field_name;
-
-    @Column(name = "repeat_time")
-    private String repeat_time;
-
-    @Column(name = "repeat_unit")
-    private String repeat_unit;
 
     @Column(name = "type")
     private String type;
@@ -55,16 +47,13 @@ public class Recommendation_Object {
     @Column(name = "bin")
     private String bin;
 
-    public Recommendation_Object(BigInteger recommendation_object_id, BigInteger recommendation_bundles_id,
-                                 String category_name, String field_name, String repeat_time, String repeat_unit,
-                                 String type, BigDecimal from_value, BigDecimal to_value, String unit, String time,
-                                 String or_condition, String bin) {
+    public Recommendation_Object(long recommendation_object_id, BigInteger recommendation_bundle_id,
+                                 String category_name, String field_name, String type, BigDecimal from_value,
+                                 BigDecimal to_value, String unit, String time, String or_condition, String bin) {
         this.recommendation_object_id = recommendation_object_id;
-        this.recommendation_bundles_id = recommendation_bundles_id;
+        this.recommendation_bundle_id = recommendation_bundle_id;
         this.category_name = category_name;
         this.field_name = field_name;
-        this.repeat_time = repeat_time;
-        this.repeat_unit = repeat_unit;
         this.type = type;
         this.from_value = from_value;
         this.to_value = to_value;
@@ -74,25 +63,24 @@ public class Recommendation_Object {
         this.bin = bin;
     }
 
-
     public Recommendation_Object() {
 
     }
 
-    public BigInteger getRecommendation_object_id() {
+    public long getRecommendation_object_id() {
         return recommendation_object_id;
     }
 
-    public void setRecommendation_object_id(BigInteger recommendation_object_id) {
+    public void setRecommendation_object_id(long recommendation_object_id) {
         this.recommendation_object_id = recommendation_object_id;
     }
 
-    public BigInteger getRecommendation_bundles_id() {
-        return recommendation_bundles_id;
+    public BigInteger getRecommendation_bundle_id() {
+        return recommendation_bundle_id;
     }
 
-    public void setRecommendation_bundles_id(BigInteger recommendation_bundles_id) {
-        this.recommendation_bundles_id = recommendation_bundles_id;
+    public void setRecommendation_bundle_id(BigInteger recommendation_bundle_id) {
+        this.recommendation_bundle_id = recommendation_bundle_id;
     }
 
     public String getCategory_name() {
@@ -109,22 +97,6 @@ public class Recommendation_Object {
 
     public void setField_name(String field_name) {
         this.field_name = field_name;
-    }
-
-    public String getRepeat_time() {
-        return repeat_time;
-    }
-
-    public void setRepeat_time(String repeat_time) {
-        this.repeat_time = repeat_time;
-    }
-
-    public String getRepeat_unit() {
-        return repeat_unit;
-    }
-
-    public void setRepeat_unit(String repeat_unit) {
-        this.repeat_unit = repeat_unit;
     }
 
     public String getType() {

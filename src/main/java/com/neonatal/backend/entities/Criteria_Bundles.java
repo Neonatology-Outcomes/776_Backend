@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -17,7 +14,8 @@ public class Criteria_Bundles {
 
     @Id
     @Column(name = "criteria_bundles_id")
-    private BigInteger criteria_bundles_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long criteria_bundles_id;
 
     @Column(name = "criteria_name")
     private String criteria_name;
@@ -37,7 +35,7 @@ public class Criteria_Bundles {
     @Column(name = "termination")
     private int termination;
 
-    public Criteria_Bundles(BigInteger criteria_bundles_id, String criteria_name, int parent_bundle_id,
+    public Criteria_Bundles(long criteria_bundles_id, String criteria_name, int parent_bundle_id,
                             int sub_bundle_id, BigDecimal repeat_time, BigDecimal repeat_unit, int termination) {
         this.criteria_bundles_id = criteria_bundles_id;
         this.criteria_name = criteria_name;
@@ -52,11 +50,11 @@ public class Criteria_Bundles {
 
     }
 
-    public BigInteger getCriteria_bundles_id() {
+    public long getCriteria_bundles_id() {
         return criteria_bundles_id;
     }
 
-    public void setCriteria_bundles_id(BigInteger criteria_bundles_id) {
+    public void setCriteria_bundles_id(long criteria_bundles_id) {
         this.criteria_bundles_id = criteria_bundles_id;
     }
 

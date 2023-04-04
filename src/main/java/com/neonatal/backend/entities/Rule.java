@@ -12,7 +12,9 @@ import jakarta.persistence.*;
 public class Rule {
 
     @Id
-    private Integer id;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     @Column(name = "rule")
     private String rule;
@@ -28,11 +30,11 @@ public class Rule {
 
     public Rule(){}
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

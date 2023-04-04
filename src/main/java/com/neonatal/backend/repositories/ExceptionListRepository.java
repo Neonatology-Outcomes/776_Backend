@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * on the Exceptionlist table with ID type of Integer
  */
 @Repository
-public interface ExceptionListRepository extends JpaRepository<Exceptionlist, Integer> {
+public interface ExceptionListRepository extends JpaRepository<Exceptionlist, Long> {
 }

@@ -13,7 +13,8 @@ public class Assessment {
 
     @Id
     @Column(name="assessment_id")
-    private BigInteger assessment_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long assessment_id;
 
     /*
     @Column(name = "creationtime")
@@ -41,7 +42,7 @@ public class Assessment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date entrytimestamp;
 
-    public Assessment(BigInteger assessment_id, BigInteger parent_bundle_id, BigInteger sub_bundle_id,
+    public Assessment(long assessment_id, BigInteger parent_bundle_id, BigInteger sub_bundle_id,
                       String uhid, String field_name, Date entrytimestamp) {
         this.assessment_id = assessment_id;
         this.parent_bundle_id = parent_bundle_id;
@@ -55,11 +56,11 @@ public class Assessment {
 
     }
 
-    public BigInteger getAssessment_id() {
+    public long getAssessment_id() {
         return assessment_id;
     }
 
-    public void setAssessment_id(BigInteger assessment_id) {
+    public void setAssessment_id(long assessment_id) {
         this.assessment_id = assessment_id;
     }
 

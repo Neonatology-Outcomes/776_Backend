@@ -1,11 +1,13 @@
 package com.neonatal.backend.controllers;
 
 import com.neonatal.backend.entities.Assessment;
+import com.neonatal.backend.models.RuleObject;
 import com.neonatal.backend.repositories.AssessmentRepository;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public class RulesController {
     private AssessmentRepository assessmentRepository;
 
     @GetMapping
-    public List<Assessment> rules(){ return assessmentRepository.findAll(); } // Get all Rules
+    public ArrayList<RuleObject> rules(){ return rulesService.getAll(); } // Get all Rules
 
     @PostMapping
     public Assessment addRule(@RequestBody Assessment assessment){ return assessmentRepository.save(assessment); } // Input new rule to the database

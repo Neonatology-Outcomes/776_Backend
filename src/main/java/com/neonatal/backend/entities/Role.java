@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * Entity class for the role table of the quality schema from the neonatal database
@@ -14,7 +11,8 @@ public class Role {
 
     @Id
     @Column(name = "roleid")
-    private int roleid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long roleid;
 
     @Column(name = "rolename")
     private String rolename;
@@ -32,11 +30,11 @@ public class Role {
 
     }
 
-    public int getRoleid() {
+    public long getRoleid() {
         return roleid;
     }
 
-    public void setRoleid(int roleid) {
+    public void setRoleid(long roleid) {
         this.roleid = roleid;
     }
 

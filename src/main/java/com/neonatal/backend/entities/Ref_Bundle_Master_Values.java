@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * Entity class for the ref_bundle_master_values table of the quality schema from the neonatal database
@@ -14,7 +11,8 @@ public class Ref_Bundle_Master_Values {
 
     @Id
     @Column(name = "mastervalueid")
-    private int mastervalueid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long mastervalueid;
 
     @Column(name = "valuename")
     private String valuename;
@@ -33,11 +31,11 @@ public class Ref_Bundle_Master_Values {
 
     }
 
-    public int getMastervalueid() {
+    public long getMastervalueid() {
         return mastervalueid;
     }
 
-    public void setMastervalueid(int mastervalueid) {
+    public void setMastervalueid(long mastervalueid) {
         this.mastervalueid = mastervalueid;
     }
 

@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigInteger;
 
@@ -16,7 +13,8 @@ public class Sub_Bundle {
 
     @Id
     @Column(name = "sub_bundle_id")
-    private BigInteger sub_bundle_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long sub_bundle_id;
 
     @Column(name = "bundle_name")
     private String bundle_name;
@@ -39,7 +37,7 @@ public class Sub_Bundle {
     @Column(name = "parent_bundle_id")
     private BigInteger parent_bundle_id;
 
-    public Sub_Bundle(BigInteger sub_bundle_id, String bundle_name, String purpose, String at_admission,
+    public Sub_Bundle(long sub_bundle_id, String bundle_name, String purpose, String at_admission,
                       String in_delivery_room, String in_nicu, String at_discharge, BigInteger parent_bundle_id) {
         this.sub_bundle_id = sub_bundle_id;
         this.bundle_name = bundle_name;
@@ -55,11 +53,11 @@ public class Sub_Bundle {
 
     }
 
-    public BigInteger getSub_bundle_id() {
+    public long getSub_bundle_id() {
         return sub_bundle_id;
     }
 
-    public void setSub_bundle_id(BigInteger sub_bundle_id) {
+    public void setSub_bundle_id(long sub_bundle_id) {
         this.sub_bundle_id = sub_bundle_id;
     }
 

@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigInteger;
 
@@ -16,12 +13,13 @@ public class Ref_Bundle_Category {
 
     @Id
     @Column(name = "category_id")
-    private BigInteger category_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long category_id;
 
     @Column(name = "criteria_name")
     private String criteria_name;
 
-    public Ref_Bundle_Category(BigInteger category_id, String criteria_name) {
+    public Ref_Bundle_Category(long category_id, String criteria_name) {
         this.category_id = category_id;
         this.criteria_name = criteria_name;
     }
@@ -30,11 +28,11 @@ public class Ref_Bundle_Category {
 
     }
 
-    public BigInteger getCategory_id() {
+    public long getCategory_id() {
         return category_id;
     }
 
-    public void setCategory_id(BigInteger category_id) {
+    public void setCategory_id(long category_id) {
         this.category_id = category_id;
     }
 

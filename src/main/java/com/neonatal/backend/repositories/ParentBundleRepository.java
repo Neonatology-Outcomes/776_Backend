@@ -11,5 +11,5 @@ import java.math.BigInteger;
  * on the Parent_Bundle table with ID type of BigInteger
  */
 @Repository
-public interface ParentBundleRepository extends JpaRepository<Parent_Bundle, BigInteger> {
+public interface ParentBundleRepository extends JpaRepository<Parent_Bundle, Long> {
 }
