@@ -1,12 +1,9 @@
 # 776_Backend
-Backend Database Repository for Neonatal Outcomes Project COMPSCI 776
-
-Java files are located in the src folder under one of the following packages:
-
-controllers: Define the endpoints for the POST/GET requests
-
-entities: Entity classes that map to tables and columns within the database.
-
-repositories: Repository interfaces act as the main DAO to perform CRUD operations on the tables themselves.
-
-services: Class files that conduct operations on passed data and act as the intermediary between controllers and repositories
+Instruction to get the code running
+1. git clone url
+2. Ensure the path to  JAVA_HOME(Java version 17) and MAVEN_HOME are set
+3. Open the project in Eclipse as "Existing maven projects"
+4. Browse to the folder with pom.xml in terminal, run the following commands
+    mvn clean install
+5. This will create jar in the target folder : quality-0.0.1-SNAPSHOT.jar , run the following command to start the server
+  java -jar /path_to_target_folder/quality-0.0.1-SNAPSHOT.jar 
