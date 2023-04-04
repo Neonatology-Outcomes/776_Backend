@@ -19,7 +19,7 @@ public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private BigInteger id;
+    private Long id;
 
     @Column(name = "username")
     private String username;
@@ -39,7 +39,7 @@ public class User {
     @Column(name = "roleid")
     private String roleid;
     public User(){}
-    public User(BigInteger id, String username, String password, String emailaddress, String firstname,
+    public User(Long id, String username, String password, String emailaddress, String firstname,
                 String lastname, String roleid) {
         this.id = id;
         this.username = username;
@@ -50,11 +50,11 @@ public class User {
         this.roleid = roleid;
     }
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
