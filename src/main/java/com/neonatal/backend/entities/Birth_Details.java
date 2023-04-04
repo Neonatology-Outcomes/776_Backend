@@ -14,7 +14,7 @@ public class Birth_Details {
 
         @Id
         @Column(name = "birth_details_id")
-        private BigInteger birth_details_id;
+        private Long birth_details_id;
 
         @Column(name = "uhid")
         private String uhid;
@@ -42,7 +42,7 @@ public class Birth_Details {
         @Column(name = "timeofadmission")
         private String timeofadmission;
 
-        public Birth_Details(BigInteger birth_details_id, String uhid, int birth_weight, int birth_gestation_week,
+        public Birth_Details(Long birth_details_id, String uhid, int birth_weight, int birth_gestation_week,
                              int birth_gestation_days, Date dateofbirth, String timeofbirth, Date dateofadmission,
                              String timeofadmission) {
                 this.birth_details_id = birth_details_id;
@@ -60,11 +60,11 @@ public class Birth_Details {
 
         }
 
-        public BigInteger getBirth_details_id() {
+        public Long getBirth_details_id() {
                 return birth_details_id;
         }
 
-        public void setBirth_details_id(BigInteger birth_details_id) {
+        public void setBirth_details_id(Long birth_details_id) {
                 this.birth_details_id = birth_details_id;
         }
 
