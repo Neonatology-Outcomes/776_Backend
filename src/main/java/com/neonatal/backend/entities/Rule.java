@@ -1,6 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 /**
  * This is the Rule entity class.  This class represents an entry within the rules table of the database,

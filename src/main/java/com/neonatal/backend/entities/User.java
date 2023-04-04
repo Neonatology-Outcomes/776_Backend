@@ -1,14 +1,14 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import java.math.BigInteger;
 
 /**
- * Entity clas for the user table of the quality schema from the neonatal databse
+ * Entity class for the user table of the quality schema from the neonatal databse
  */
 @Entity
 @Table(name = "user", schema = "quality")
@@ -35,7 +35,7 @@ public class User {
 
     @Column(name = "roleid")
     private String roleid;
-
+    public User(){}
     public User(BigInteger id, String username, String password, String emailaddress, String firstname,
                 String lastname, String roleid) {
         this.id = id;

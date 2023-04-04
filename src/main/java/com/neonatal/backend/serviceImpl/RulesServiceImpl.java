@@ -14,7 +14,7 @@ import com.neonatal.backend.entities.Recommendation_Object;
 import com.neonatal.backend.entities.Sub_Bundle;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.SubBundlesPOJO;
-import com.neonatal.backend.service.RuleService;
+import com.neonatal.backend.services.RulesService;
 
 /**
  *
@@ -22,7 +22,7 @@ import com.neonatal.backend.service.RuleService;
  *
  */
 @Service
-public class RulesServiceImpl implements RuleService {
+public class RulesServiceImpl implements RulesService {
 
 	@Autowired
 	PatientDao patientDao;

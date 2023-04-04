@@ -1,6 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.math.BigInteger;
 import java.util.Date;
