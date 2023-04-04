@@ -1,48 +1,55 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.io.Serializable;
 
-import java.math.BigInteger;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
-/**
- * Entity class for the ref_bundle_category table of the quality schema from the neonatal databse
- */
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
-@Table(name = "ref_bundle_category", schema = "quality")
-public class Ref_Bundle_Category {
+@Table(name = "ref_bundle_category" , schema="quality")
+@NamedQuery(name = "Ref_Bundle_Category.findAll", query = "SELECT r FROM Ref_Bundle_Category r")
+public class Ref_Bundle_Category implements Serializable {
 
-    @Id
-    @Column(name = "category_id")
-    private BigInteger category_id;
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "criteria_name")
-    private String criteria_name;
+	@Id
+	@Column(name = "categoryid")
+	private Long categoryid;
 
-    public Ref_Bundle_Category(BigInteger category_id, String criteria_name) {
-        this.category_id = category_id;
-        this.criteria_name = criteria_name;
-    }
+	@Column(name = "categoryname")
+	private String categoryname;
 
-    public Ref_Bundle_Category() {
+	public Ref_Bundle_Category(Long categoryid, String categoryname) {
+		this.categoryid = categoryid;
+		this.categoryname = categoryname;
+	}
 
-    }
+	public Ref_Bundle_Category() {
 
-    public BigInteger getCategory_id() {
-        return category_id;
-    }
+	}
 
-    public void setCategory_id(BigInteger category_id) {
-        this.category_id = category_id;
-    }
+	public Long categoryid() {
+		return categoryid;
+	}
 
-    public String getCriteria_name() {
-        return criteria_name;
-    }
+	public void setCategory_id(Long categoryid) {
+		this.categoryid = categoryid;
+	}
 
-    public void setCriteria_name(String criteria_name) {
-        this.criteria_name = criteria_name;
-    }
+	public String getCategorynamename() {
+		return categoryname;
+	}
+
+	public void setCategorynamename(String categoryname) {
+		this.categoryname = categoryname;
+	}
+
 }
