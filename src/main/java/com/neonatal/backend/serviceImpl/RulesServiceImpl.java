@@ -18,7 +18,7 @@ import com.neonatal.backend.services.RulesService;
 
 /**
  *
- * @author iNICU
+ * @author Quality
  *
  */
 @Service
@@ -28,7 +28,7 @@ public class RulesServiceImpl implements RulesService {
 	PatientDao patientDao;
 
 	public RulesServiceImpl() {
-		System.out.println("Analytics Service Layer");
+		System.out.println("Rules Service Layer");
 	}
 
 	@Override
