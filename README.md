@@ -8,4 +8,4 @@ Instruction to get the code running
     mvn clean install
 5. This will create jar in the target folder : quality-0.0.1-SNAPSHOT.jar , run the following command to start the server
 
-  java -jar /path_to_target_folder/quality-0.0.1-SNAPSHOT.jar 
+  java -jar quality-0.0.1-SNAPSHOT.jar 
