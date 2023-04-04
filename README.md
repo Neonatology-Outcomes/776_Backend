@@ -1,7 +1,7 @@
 # 776_Backend
 Instruction to get the code running
 1. git clone url
-2. Ensure the path to  JAVA_HOME(Java version 17) and MAVEN_HOME are set
+2. Ensure the path to  JAVA_HOME(Java version 11) and MAVEN_HOME are set
 3. Open the project in Eclipse as "Existing maven projects"
 4. Browse to the folder with pom.xml in terminal, run the following commands
 
