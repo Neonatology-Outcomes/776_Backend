@@ -2,15 +2,15 @@ package com.neonatal.backend.models;
 
 import java.util.List;
 
-public class ParentBundle {
+public class ParentBundlePOJO {
 
     String parentBundle;
     String parentPurpose;
     String parentApplicable;
     String parentOption;
-    List<SubBundle> subBundles;
+    List<SubBundlePOJO> subBundles;
 
-    public ParentBundle(String parentBundle, String parentPurpose, String parentApplicable, String parentOption, List<SubBundle> subBundles) {
+    public ParentBundlePOJO(String parentBundle, String parentPurpose, String parentApplicable, String parentOption, List<SubBundlePOJO> subBundles) {
         this.parentBundle = parentBundle;
         this.parentPurpose = parentPurpose;
         this.parentApplicable = parentApplicable;
@@ -50,11 +50,11 @@ public class ParentBundle {
         this.parentOption = parentOption;
     }
 
-    public List<SubBundle> getSubBundles() {
+    public List<SubBundlePOJO> getSubBundles() {
         return subBundles;
     }
 
-    public void setSubBundles(List<SubBundle> subBundles) {
+    public void setSubBundles(List<SubBundlePOJO> subBundles) {
         this.subBundles = subBundles;
     }
 }

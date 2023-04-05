@@ -16,10 +16,10 @@ public class Recommendation_Object {
     @Id
     @Column(name = "recommendation_object_id")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
-    private long recommendation_object_id;
+    private Long recommendation_object_id;
 
     @Column(name = "recommendation_bundle_id")
-    private long recommendation_bundle_id;
+    private Long recommendation_bundle_id;
 
     @Column(name = "category_name")
     private String category_name;
@@ -31,10 +31,10 @@ public class Recommendation_Object {
     private String type;
 
     @Column(name = "from_value")
-    private float from_value;
+    private Float from_value;
 
     @Column(name = "to_value")
-    private float to_value;
+    private Float to_value;
 
     @Column(name = "unit")
     private String unit;
@@ -49,7 +49,7 @@ public class Recommendation_Object {
     private String bin;
 
     @Column(name = "repeat_time")
-    private int repeat_time;
+    private Integer repeat_time;
 
     @Column(name = "repeat_unit")
     private String repeat_unit;

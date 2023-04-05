@@ -2,7 +2,7 @@ package com.neonatal.backend.models;
 
 import java.util.List;
 
-public class RecommendationObject {
+public class RecommendationObjectPOJO {
     private String category_name;
     private String field_name;
     private String type;

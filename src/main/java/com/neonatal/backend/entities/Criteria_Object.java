@@ -33,10 +33,10 @@ public class Criteria_Object {
     private String type;
 
     @Column(name = "from_value")
-    private float from_value;
+    private Float from_value;
 
     @Column(name = "to_value")
-    private float to_value;
+    private Float to_value;
 
     @Column(name = "unit")
     private String unit;

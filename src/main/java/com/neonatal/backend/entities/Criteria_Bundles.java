@@ -31,7 +31,7 @@ public class Criteria_Bundles {
     private int repeat_time;
 
     @Column(name = "repeat_unit")
-    private int repeat_unit;
+    private Integer repeat_unit;
 
     @Column(name = "termination")
     private int termination;
@@ -40,6 +40,10 @@ public class Criteria_Bundles {
         this.criteria_name = criteria_name;
         this.parent_bundle_id = parent_bundle_id;
         this.sub_bundle_id = sub_bundle_id;
+    }
+
+    public Criteria_Bundles() {
+
     }
 
     public long getCriteria_bundles_id() {

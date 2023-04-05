@@ -1,6 +1,6 @@
 package com.neonatal.backend.models;
 
-public class CriteriaObject {
+public class CriteriaObjectPOJO {
     private String category_name;
     private String field_name;
     private String type;

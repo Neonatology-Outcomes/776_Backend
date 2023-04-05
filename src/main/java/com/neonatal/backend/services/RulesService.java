@@ -6,9 +6,7 @@ import com.neonatal.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,8 +20,6 @@ import java.util.List;
 public class RulesService {
 
     @Autowired
-    private RulesRepository rulesRepository;
-    @Autowired
     private SubBundle_Repository subBundleRepository;
     @Autowired
     private CriteriaBundlesRepository criteriaBundlesRepository;
@@ -36,27 +32,14 @@ public class RulesService {
     @Autowired
     private ParentBundleRepository parentBundleRepository;
 
-
-
-    /* Example of a get by id call
-    public Rule findById(Long id){
-        Optional<Rule> rules = rulesRepository.findById(id);
-        if (rules.isPresent()){
-            return rules.get();
-        }else {
-            return null;
-        }
-    }
-     */
-
     /**
      * Get all the rules, and return them as a list of type Rule
      * @return List of Rule objects
      */
     // TODO: Implement Optional<Object> or if then in case find all or queries are returned null or empty
-    public ArrayList<RuleObject> getAll(){
+    public ArrayList<RuleObjectPOJO> getAll(){
 
-        ArrayList<RuleObject> ruleObject = new ArrayList<>();
+        ArrayList<RuleObjectPOJO> ruleObject = new ArrayList<>();
 
         try {
 
@@ -66,6 +49,7 @@ public class RulesService {
             long [] subBundleIds = new long[subBundleList.size()];
             for (int i = 0; i < subBundleIds.length; i ++){
                 subBundleIds[i] = subBundleList.get(i).getSub_bundle_id();
+                System.out.println(subBundleIds[i]);
             }
 
             for (int m = 0; m < subBundleIds.length; m++) {
@@ -111,7 +95,7 @@ public class RulesService {
                     // TODO: Repeat time and Repeat Unit ?
                 }
 
-                ruleObject.add(new RuleObject(ruleName, condition.toString(), action.toString()));
+                ruleObject.add(new RuleObjectPOJO(ruleName, condition.toString(), action.toString()));
             }
 
         } catch (Exception e) {
@@ -122,60 +106,78 @@ public class RulesService {
     }
 
     /**
-     * Add a rules to the database
-     * @param parentBundle JSON parent Bundle object to be parsed.
-     * @return Rule type that was added
+     * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body paramter) of the POST request and
+     * parses the objects, and enters the information into the parent_bundle, sub_bundle, criteria_bundle,
+     * criteria_object,
+     * @param parentBundle ParentBundlePOJO representing the JSON string that was passed to the POST request
+     * @return "Success" if successful // TODO: Modify return value?
      */
-    public String addRules(ParentBundle parentBundle){
+    public String addRules(ParentBundlePOJO parentBundle){
 
-        List<SubBundle> subBundles = parentBundle.getSubBundles();
+        try {
 
-        // Save to the parent bundle table, and create the parent bundle object so we can retrieve the ID number
-        Parent_Bundle parent_bundle = parentBundleRepository.save(new Parent_Bundle(parentBundle.getParentBundle(),
-                parentBundle.getParentPurpose(), "", "yes", ""));
-        long parentBundleId = parent_bundle.getParent_bundle_id();
-        System.out.println("Parent Bundle ID: " + parentBundleId);
+            List<SubBundlePOJO> subBundles = parentBundle.getSubBundles();
 
-        // There can be multiple sub bundles therefore they must be looped through and processed individually
-        for (int i = 0; i < subBundles.size(); i++){
-            SubBundle objSubBundle = subBundles.get(i);
-            Sub_Bundle subBundle = subBundleRepository.save(new Sub_Bundle(objSubBundle.getBundle(),
-                    objSubBundle.getPurpose(), parentBundleId));
+            // Save to the parent bundle table, and create the parent bundle object so we can retrieve the ID number
+            Parent_Bundle parent_bundle = parentBundleRepository.save(new Parent_Bundle(parentBundle.getParentBundle(),
+                    parentBundle.getParentPurpose(), "", "yes", ""));
+            long parentBundleId = parent_bundle.getParent_bundle_id();
+            System.out.println("Parent Bundle ID: " + parentBundleId);
 
-            // Save to the Criteria Bundles table, create an object to extract its ID, we need it
-            Criteria_Bundles criteria_bundles = criteriaBundlesRepository.save(new Criteria_Bundles(objSubBundle.getCriteriasName().get(i),
-                    parentBundleId, subBundle.getSub_bundle_id()));
-            long criteriaBundleID = criteria_bundles.getCriteria_bundles_id();
-            System.out.println("Criteria Bundle ID: " + criteriaBundleID);
+            // There can be multiple sub bundles therefore they must be looped through and processed individually
+            for (int i = 0; i < subBundles.size(); i++) {
+                SubBundlePOJO objSubBundle = subBundles.get(i);
+                Sub_Bundle subBundle = subBundleRepository.save(new Sub_Bundle(objSubBundle.getBundle(),
+                        objSubBundle.getPurpose(), parentBundleId));
 
-            // Save to the Recommendation Bundle, create that object to extract its id as well
-            Recommendation_Bundle recommendation_bundle = recommendBundleRepository.save(new Recommendation_Bundle(subBundle.getSub_bundle_id(),
-                    parentBundleId, criteriaBundleID));
-            long recommendationBundleID = recommendation_bundle.getRecommendation_bundle_id();
-            System.out.println("Recommendation Bundle ID: " + recommendationBundleID);
+                // Save to the Criteria Bundles table, create an object to extract its ID, we need it
+                Criteria_Bundles criteria_bundles = criteriaBundlesRepository.save(new Criteria_Bundles(objSubBundle.getCriteriasName().get(i),
+                        parentBundleId, subBundle.getSub_bundle_id()));
+                long criteriaBundleID = criteria_bundles.getCriteria_bundles_id();
+                System.out.println("Criteria Bundle ID: " + criteriaBundleID);
 
-            List<List<CriteriaObject>> criteriaObjectList = objSubBundle.getCriteriaObjectList();
-            List<List<RecommendationObject>> recomendObjectList = objSubBundle.getRecommendationObjectList();
+                // Save to the Recommendation Bundle, create that object to extract its id as well
+                Recommendation_Bundle recommendation_bundle = recommendBundleRepository.save(new Recommendation_Bundle(subBundle.getSub_bundle_id(),
+                        parentBundleId, criteriaBundleID));
+                long recommendationBundleID = recommendation_bundle.getRecommendation_bundle_id();
+                System.out.println("Recommendation Bundle ID: " + recommendationBundleID);
 
-            // Iterate through the criteriaOBjectList, convert them to Criteria_Object entity lists, and write them
-            for (List<CriteriaObject> objList: criteriaObjectList){
-                List<Criteria_Object> entityObject = mapCriteriaObjectToEntity(objList, criteriaBundleID);
-                criteriaObjectRepository.saveAll(entityObject);
+                // Here we extract all the criteria and recommendation objects as a list of lists for row submission
+                List<List<CriteriaObjectPOJO>> criteriaObjectList = objSubBundle.getCriteriaObjectList();
+                List<List<RecommendationObjectPOJO>> recomendObjectList = objSubBundle.getRecommendationObjectList();
+
+                // Iterate through the criteriaOBjectList, convert them to Criteria_Object entity lists, and write them
+                for (List<CriteriaObjectPOJO> objList : criteriaObjectList) {
+                    List<Criteria_Object> entityObject = mapCriteriaObjectToEntity(objList, criteriaBundleID);
+                    criteriaObjectRepository.saveAll(entityObject);
+                }
+                // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
+                for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
+                    List<Recommendation_Object> entityObject = mapRecomOBjectToEntity(objList, recommendationBundleID);
+                    recommendObjectRepository.saveAll(entityObject);
+                }
             }
-            // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
-            for (List<RecommendationObject> objList: recomendObjectList){
-                List<Recommendation_Object> entityObject = mapRecomOBjectToEntity(objList, recommendationBundleID);
-                recommendObjectRepository.saveAll(entityObject);
-            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     return "success";
     }
 
-    private List<Criteria_Object> mapCriteriaObjectToEntity(List<CriteriaObject> criteriaObjects, long bundleID){
+
+    /**
+     * Converts a list of CriteriaObjectPOJO from the JSON passed to the POST request to a list of
+     * Criteria_Object Entities
+     *
+     * @param criteriaObjects a List of CriteriaObjectPOJO objects that are to be converted
+     * @param bundleID the criteria_bundle_id that is associated with the Criteria_Object entity that needs to
+     *                 be entered into the criteria_bundles_id field for each entry.
+     * @return List of Criteria_Object entities
+     */
+    private List<Criteria_Object> mapCriteriaObjectToEntity(List<CriteriaObjectPOJO> criteriaObjects, long bundleID){
         List<Criteria_Object> criteria_objectList = new ArrayList<>();
-        for (CriteriaObject criteriaObject: criteriaObjects){
+        for (CriteriaObjectPOJO criteriaObject: criteriaObjects){
             Criteria_Object entityObject = new Criteria_Object(bundleID, criteriaObject.getField_name(),
                     criteriaObject.getType(), criteriaObject.getFrom_value(), criteriaObject.getTime());
             criteria_objectList.add(entityObject);
@@ -183,9 +185,18 @@ public class RulesService {
         return criteria_objectList;
     }
 
-    private List<Recommendation_Object> mapRecomOBjectToEntity(List<RecommendationObject> recomendObjects, long bundleID){
+    /**
+     * Converts a list of RecommendationOBjectPOJO from the JSON passed to the POST request to a list
+     * of Recommendation_Object entities.
+     *
+     * @param recomendObjects a List of RecommendationOBjectPOJO objects that are to be converted
+     * @param bundleID the recommendation_bundle_id that is associated with the Recommendation_Object entity that needs
+     *                 to be entered into the recommendation_bundle_id for each entry.
+     * @return
+     */
+    private List<Recommendation_Object> mapRecomOBjectToEntity(List<RecommendationObjectPOJO> recomendObjects, long bundleID){
         List<Recommendation_Object> recomend_objectList = new ArrayList<>();
-        for (RecommendationObject recomendObject: recomendObjects){
+        for (RecommendationObjectPOJO recomendObject: recomendObjects){
             Recommendation_Object entityObject = new Recommendation_Object(bundleID, recomendObject.getCategory_name(),
                     recomendObject.getField_name(), recomendObject.getType(), recomendObject.getFrom_value(),
                     recomendObject.getTime());

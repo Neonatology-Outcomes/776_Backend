@@ -1,11 +1,11 @@
 package com.neonatal.backend.models;
 
-public class RuleObject {
+public class RuleObjectPOJO {
     String ruleName = new String();
     String condition = new String();
     String action = new String();
 
-    public RuleObject(String ruleName, String condition, String action) {
+    public RuleObjectPOJO(String ruleName, String condition, String action) {
         this.ruleName = ruleName;
         this.condition = condition;
         this.action = action;

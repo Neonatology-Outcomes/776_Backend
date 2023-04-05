@@ -1,15 +1,13 @@
 package com.neonatal.backend.controllers;
 
-import com.neonatal.backend.entities.Assessment;
-import com.neonatal.backend.models.ParentBundle;
-import com.neonatal.backend.models.RuleObject;
+import com.neonatal.backend.models.ParentBundlePOJO;
+import com.neonatal.backend.models.RuleObjectPOJO;
 import com.neonatal.backend.repositories.AssessmentRepository;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that defines what GET, POST, etc. calls will be connected with which service method
@@ -24,9 +22,9 @@ public class RulesController {
     private AssessmentRepository assessmentRepository;
 
     @GetMapping
-    public ArrayList<RuleObject> rules(){ return rulesService.getAll(); } // Get all Rules
+    public ArrayList<RuleObjectPOJO> rules(){ return rulesService.getAll(); } // Get all Rules
 
     @PostMapping
-    public String addRule(@RequestBody ParentBundle parentBundle){ return rulesService.addRules(parentBundle);}
+    public String addRule(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
 
 }
