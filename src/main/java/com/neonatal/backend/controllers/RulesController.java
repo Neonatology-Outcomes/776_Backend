@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 /**
- * Class that defines what GET, POST, etc. calls will be connected with which service method
+ * Class that defines what GET, POST calls related to the Rules and Actions tables
  */
-@RequestMapping("rules")  // Sets the end point for calls related to Rules Design
+
 @RestController
 public class RulesController {
 
@@ -21,10 +21,23 @@ public class RulesController {
     @Autowired
     private AssessmentRepository assessmentRepository;
 
+    /**
+     * Gets all bundle information and returns them as a JSON array of rows with values
+     * for: Rule Name, Condition, Action
+     * @return an ArrayList of RUleOBjectPOJO that represents the JSON.
+     */
+    @RequestMapping("/getBundle")
     @GetMapping
-    public ArrayList<RuleObjectPOJO> rules(){ return rulesService.getAll(); } // Get all Rules
+    public ArrayList<RuleObjectPOJO> getBundle(){ return rulesService.getAll(); } // Get all Rules
 
+
+    /**
+     * Saves the bundle passed as a JSON to the /saveBundle address into the database
+     * @param parentBundle ParentBundlePOJO object representing the JSON that is passed
+     * @return A string "success" if successful // TODO: Change this?
+     */
+    @RequestMapping("/saveBundle")
     @PostMapping
-    public String addRule(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
+    public String saveBundle(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
 
 }
