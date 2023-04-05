@@ -1,7 +1,5 @@
 package com.neonatal.backend.models;
 
-import java.util.ArrayList;
-
 public class RuleObject {
     String ruleName = new String();
     String condition = new String();

@@ -1,6 +1,7 @@
 package com.neonatal.backend.controllers;
 
 import com.neonatal.backend.entities.Assessment;
+import com.neonatal.backend.models.ParentBundle;
 import com.neonatal.backend.models.RuleObject;
 import com.neonatal.backend.repositories.AssessmentRepository;
 import com.neonatal.backend.services.RulesService;
@@ -26,6 +27,6 @@ public class RulesController {
     public ArrayList<RuleObject> rules(){ return rulesService.getAll(); } // Get all Rules
 
     @PostMapping
-    public Assessment addRule(@RequestBody Assessment assessment){ return assessmentRepository.save(assessment); } // Input new rule to the database
+    public String addRule(@RequestBody ParentBundle parentBundle){ return rulesService.addRules(parentBundle);}
 
 }

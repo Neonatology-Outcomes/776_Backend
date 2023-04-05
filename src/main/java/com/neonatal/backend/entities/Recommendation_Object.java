@@ -9,16 +9,17 @@ import java.math.BigInteger;
  * Entity class for the recommendation_object table of the quality schema from the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "recommendation_object", schema = "quality")
 public class Recommendation_Object {
 
     @Id
     @Column(name = "recommendation_object_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long recommendation_object_id;
 
     @Column(name = "recommendation_bundle_id")
-    private BigInteger recommendation_bundle_id;
+    private long recommendation_bundle_id;
 
     @Column(name = "category_name")
     private String category_name;
@@ -30,10 +31,10 @@ public class Recommendation_Object {
     private String type;
 
     @Column(name = "from_value")
-    private BigDecimal from_value;
+    private float from_value;
 
     @Column(name = "to_value")
-    private BigDecimal to_value;
+    private float to_value;
 
     @Column(name = "unit")
     private String unit;
@@ -47,20 +48,19 @@ public class Recommendation_Object {
     @Column(name = "bin")
     private String bin;
 
-    public Recommendation_Object(long recommendation_object_id, BigInteger recommendation_bundle_id,
-                                 String category_name, String field_name, String type, BigDecimal from_value,
-                                 BigDecimal to_value, String unit, String time, String or_condition, String bin) {
-        this.recommendation_object_id = recommendation_object_id;
+    @Column(name = "repeat_time")
+    private int repeat_time;
+
+    @Column(name = "repeat_unit")
+    private String repeat_unit;
+
+    public Recommendation_Object(long recommendation_bundle_id, String category_name, String field_name, String type, float from_value, String time) {
         this.recommendation_bundle_id = recommendation_bundle_id;
         this.category_name = category_name;
         this.field_name = field_name;
         this.type = type;
         this.from_value = from_value;
-        this.to_value = to_value;
-        this.unit = unit;
         this.time = time;
-        this.or_condition = or_condition;
-        this.bin = bin;
     }
 
     public Recommendation_Object() {
@@ -75,11 +75,11 @@ public class Recommendation_Object {
         this.recommendation_object_id = recommendation_object_id;
     }
 
-    public BigInteger getRecommendation_bundle_id() {
+    public long getRecommendation_bundle_id() {
         return recommendation_bundle_id;
     }
 
-    public void setRecommendation_bundle_id(BigInteger recommendation_bundle_id) {
+    public void setRecommendation_bundle_id(long recommendation_bundle_id) {
         this.recommendation_bundle_id = recommendation_bundle_id;
     }
 
@@ -107,19 +107,19 @@ public class Recommendation_Object {
         this.type = type;
     }
 
-    public BigDecimal getFrom_value() {
+    public float getFrom_value() {
         return from_value;
     }
 
-    public void setFrom_value(BigDecimal from_value) {
+    public void setFrom_value(float from_value) {
         this.from_value = from_value;
     }
 
-    public BigDecimal getTo_value() {
+    public float getTo_value() {
         return to_value;
     }
 
-    public void setTo_value(BigDecimal to_value) {
+    public void setTo_value(float to_value) {
         this.to_value = to_value;
     }
 
@@ -153,5 +153,21 @@ public class Recommendation_Object {
 
     public void setBin(String bin) {
         this.bin = bin;
+    }
+
+    public int getRepeat_time() {
+        return repeat_time;
+    }
+
+    public void setRepeat_time(int repeat_time) {
+        this.repeat_time = repeat_time;
+    }
+
+    public String getRepeat_unit() {
+        return repeat_unit;
+    }
+
+    public void setRepeat_unit(String repeat_unit) {
+        this.repeat_unit = repeat_unit;
     }
 }
