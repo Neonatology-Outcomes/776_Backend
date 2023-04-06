@@ -6,12 +6,13 @@ import jakarta.persistence.*;
  * Entity class for the exceptionlist table in the quality schema of the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "exceptionlist", schema = "quality")
 public class Exceptionlist {
 
     @Id
     @Column(name = "exceptionid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long exceptionid;
 
     @Column(name = "exceptiontype")

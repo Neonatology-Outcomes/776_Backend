@@ -9,12 +9,13 @@ import java.util.Date;
  * Entity class for the birth_details table within the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name="birth_details", schema = "quality")
 public class Birth_Details {
 
         @Id
         @Column(name = "birth_details_id")
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
         private long birth_details_id;
 
         @Column(name = "uhid")

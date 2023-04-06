@@ -6,12 +6,13 @@ import jakarta.persistence.*;
  * Entity class for the ref_bundle_fields table of the quality schema from the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "ref_bundle_fields", schema = "quality")
 public class Ref_Bundle_Fields {
 
     @Id
     @Column(name = "fieldid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long fieldid;
 
     @Column(name = "fieldname")

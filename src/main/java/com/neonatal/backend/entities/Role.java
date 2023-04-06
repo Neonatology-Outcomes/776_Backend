@@ -6,12 +6,13 @@ import jakarta.persistence.*;
  * Entity class for the role table of the quality schema from the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "role", schema = "quality")
 public class Role {
 
     @Id
     @Column(name = "roleid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long roleid;
 
     @Column(name = "rolename")

@@ -8,12 +8,13 @@ import java.math.BigInteger;
  * Entity clas for the user table of the quality schema from the neonatal databse
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "user", schema = "quality")
 public class User {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long id;
 
     @Column(name = "username")

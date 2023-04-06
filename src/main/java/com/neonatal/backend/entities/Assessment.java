@@ -8,12 +8,13 @@ import java.util.Date;
  * Entity class for the assessment table within the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name="assessment", schema = "quality")
 public class Assessment {
 
     @Id
     @Column(name="assessment_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long assessment_id;
 
     /*
