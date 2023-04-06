@@ -30,10 +30,12 @@ public class RulesService {
     private ParentBundleRepository parentBundleRepository;
 
     /**
-     * Get all the rules, and return them as a list of type Rule
-     * @return List of Rule objects
+     * Gets the list of all Rule Names and their associated Conditions and Actions and returns them
+     * for the GET endpoint /getBundles
+     *
+     * @return List of RuleObjectPOJO
      */
-    // TODO: Implement Optional<Object> or if then in case find all or queries are returned null or empty
+    // TODO: The rule name is derived from the sub bundle table, this may need updating
     public ArrayList<RuleObjectPOJO> getAll(){
 
         ArrayList<RuleObjectPOJO> ruleObject = new ArrayList<>();
