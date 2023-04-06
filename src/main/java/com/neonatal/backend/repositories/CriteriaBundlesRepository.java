@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Repository interface for the Assessment table.  This interface functions as the class for CRUD operations
+ * This interface functions as the class for CRUD operations
  * on the Criteria_Bundles table with ID type of BigInteger
  */
 @Repository
