@@ -51,7 +51,8 @@ public class RulesService {
             }
 
             for (int m = 0; m < subBundleIds.length; m++) {
-
+                
+                // Get the subBundleID and the Rule Name from the array
                 long subBundleId = subBundleIds[0];
                 String ruleName = subBundleList.get(m).getPurpose();
 
