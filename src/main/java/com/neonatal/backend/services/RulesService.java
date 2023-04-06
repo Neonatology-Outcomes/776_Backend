@@ -49,7 +49,6 @@ public class RulesService {
             long [] subBundleIds = new long[subBundleList.size()];
             for (int i = 0; i < subBundleIds.length; i ++){
                 subBundleIds[i] = subBundleList.get(i).getSub_bundle_id();
-                System.out.println(subBundleIds[i]);
             }
 
             for (int m = 0; m < subBundleIds.length; m++) {
@@ -115,6 +114,8 @@ public class RulesService {
     public String addRules(ParentBundlePOJO parentBundle){
 
         try {
+
+            System.out.println("Adding Bundle to Database Neonatal");
 
             List<SubBundlePOJO> subBundles = parentBundle.getSubBundles();
 
