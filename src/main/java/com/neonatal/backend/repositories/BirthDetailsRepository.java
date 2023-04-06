@@ -11,5 +11,5 @@ import java.math.BigInteger;
  * on the Birth_Details table with ID type of BigInteger
  */
 @Repository
-public interface BirthDetailsRepository extends JpaRepository<Birth_Details, BigInteger> {
+public interface BirthDetailsRepository extends JpaRepository<Birth_Details, Long> {
 }

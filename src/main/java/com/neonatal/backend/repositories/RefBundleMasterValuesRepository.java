@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * on the Ref_Bundle_Master_Values table with ID type of Integer
  */
 @Repository
-public interface RefBundleMasterValuesRepository extends JpaRepository<Ref_Bundle_Master_Values, Integer> {
+public interface RefBundleMasterValuesRepository extends JpaRepository<Ref_Bundle_Master_Values, Long> {
 }

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * on the BRef_Bundle_Fields table with ID type of Integer
  */
 @Repository
-public interface RefBundleFieldsRepository extends JpaRepository<Ref_Bundle_Fields, Integer> {
+public interface RefBundleFieldsRepository extends JpaRepository<Ref_Bundle_Fields, Long> {
 }

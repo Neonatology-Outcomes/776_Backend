@@ -11,5 +11,5 @@ import java.math.BigInteger;
  * on the User table with ID type of BigInteger
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, BigInteger> {
+public interface UserRepository extends JpaRepository<User, Long> {
 }

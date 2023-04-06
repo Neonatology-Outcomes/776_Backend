@@ -10,6 +10,6 @@ import java.math.BigInteger;
  * on the Assessment table with ID type of BigInteger
  */
 @Repository
-public interface AssessmentRepository extends JpaRepository<Assessment, BigInteger> {
+public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
 
 }
