@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * This interface functions as the class for CRUD operations
- * on the Criteria_Bundles table with ID type of BigInteger
+ * on the Criteria_Bundles table with ID type of long.
  */
 @Repository
 public interface CriteriaBundlesRepository extends JpaRepository<Criteria_Bundles, Long> {
