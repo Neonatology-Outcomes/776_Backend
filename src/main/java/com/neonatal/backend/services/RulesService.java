@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that defines service operations for rules Design.  This is the class that connects the rules controller to
- * the rules data within the neonatal database's rules table.  The rules controller calls a method within this class,
- * which then queries rules table within the database, runs logic on the retrived data (if needed) then returns the
- * information back to the controller.
+ * Class that defines service operations for the saveBundle and getBundle endpoints.  
  */
 @Service
 @Transactional
