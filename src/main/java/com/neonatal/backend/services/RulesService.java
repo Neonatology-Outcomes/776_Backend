@@ -56,11 +56,11 @@ public class RulesService {
                 long subBundleId = subBundleIds[0];
                 String ruleName = subBundleList.get(m).getPurpose();
 
-                // Get a list of all criteria with the associated sub bundle id
+                // Get a list of all criteria objects with the associated sub bundle id
                 List<Criteria_Bundles> critBundBySubBundId = criteriaBundlesRepository.getBySub_bundle_id(subBundleId);
                 long criteria_id = critBundBySubBundId.get(0).getCriteria_bundles_id();
 
-                // Get a list of all criteria with the associated sub bundle id
+                // Get a list of all recommendation objects with the associated sub bundle id
                 List<Recommendation_Bundle> recBundBySubBundId = recommendBundleRepository.getBySub_bundle_id(subBundleId);
                 long recom_id = recBundBySubBundId.get(0).getRecommendation_bundle_id();
 
