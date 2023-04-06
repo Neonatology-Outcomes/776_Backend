@@ -105,9 +105,10 @@ public class RulesService {
     }
 
     /**
-     * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body paramter) of the POST request and
+     * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body parameter) of the POST request and
      * parses the objects, and enters the information into the parent_bundle, sub_bundle, criteria_bundle,
-     * criteria_object,
+     * criteria_object, reccommendation_bundle, recommendation_object tables.
+     * 
      * @param parentBundle ParentBundlePOJO representing the JSON string that was passed to the POST request
      * @return "Success" if successful // TODO: Modify return value?
      */
