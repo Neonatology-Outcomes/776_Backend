@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 /**
- * Repository interface for the Assessment table.  This interface functions as the class for CRUD operations
- * on the Assessment table with ID type of BigInteger
+ * This interface functions as the class for CRUD operations
+ * on the Assessment table with ID type of long.
  */
 @Repository
 public interface AssessmentRepository extends JpaRepository<Assessment, Long> {

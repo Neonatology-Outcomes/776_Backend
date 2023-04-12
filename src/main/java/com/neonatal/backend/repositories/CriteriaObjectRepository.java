@@ -10,8 +10,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Repository interface for the Assessment table.  This interface functions as the class for CRUD operations
- * on the Criteria_Object table with ID type of BigInteger
+ * This interface functions as the class for CRUD operations
+ * on the Criteria_Object table with ID type of Long.
  */
 @Repository
 public interface CriteriaObjectRepository extends JpaRepository<Criteria_Object, Long> {

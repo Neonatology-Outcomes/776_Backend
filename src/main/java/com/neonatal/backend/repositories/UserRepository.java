@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Repository interface for the Assessment table.  This interface functions as the class for CRUD operations
- * on the User table with ID type of BigInteger
+ *This interface functions as the class for CRUD operations
+ * on the User table with ID type of Long.
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

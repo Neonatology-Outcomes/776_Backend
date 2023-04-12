@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that defines service operations for the saveBundle and getBundle endpoints.
+ * Class that defines service operations for the saveBundle and getBundle endpoints.  
  */
 @Service
 @Transactional
@@ -56,11 +56,11 @@ public class RulesService {
                 long subBundleId = subBundleIds[0];
                 String ruleName = subBundleList.get(m).getPurpose();
 
-                // Get a list of all criteria with the associated sub bundle id
+                // Get a list of all criteria objects with the associated sub bundle id
                 List<Criteria_Bundles> critBundBySubBundId = criteriaBundlesRepository.getBySub_bundle_id(subBundleId);
                 long criteria_id = critBundBySubBundId.get(0).getCriteria_bundles_id();
 
-                // Get a list of all criteria with the associated sub bundle id
+                // Get a list of all recommendation objects with the associated sub bundle id
                 List<Recommendation_Bundle> recBundBySubBundId = recommendBundleRepository.getBySub_bundle_id(subBundleId);
                 long recom_id = recBundBySubBundId.get(0).getRecommendation_bundle_id();
 
@@ -110,7 +110,6 @@ public class RulesService {
      * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body parameter) of the POST request and
      * parses the objects, and enters the information into the parent_bundle, sub_bundle, criteria_bundle,
      * criteria_object, reccommendation_bundle, recommendation_object tables.
-     *
      * @param parentBundle ParentBundlePOJO representing the JSON string that was passed to the POST request
      * @return "Success" if successful // TODO: Modify return value?
      */
