@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that defines service operations for rules Design.  This is the class that connects the rules controller to
- * the rules data within the neonatal database's rules table.  The rules controller calls a method within this class,
- * which then queries rules table within the database, runs logic on the retrived data (if needed) then returns the
- * information back to the controller.
+ * Class that defines service operations for the saveBundle and getBundle endpoints.
  */
 @Service
 @Transactional
@@ -33,10 +30,12 @@ public class RulesService {
     private ParentBundleRepository parentBundleRepository;
 
     /**
-     * Get all the rules, and return them as a list of type Rule
-     * @return List of Rule objects
+     * Gets the list of all Rule Names and their associated Conditions and Actions and returns them
+     * for the GET endpoint /getBundles
+     *
+     * @return List of RuleObjectPOJO
      */
-    // TODO: Implement Optional<Object> or if then in case find all or queries are returned null or empty
+    // TODO: The rule name is derived from the sub bundle table, this may need updating
     public ArrayList<RuleObjectPOJO> getAll(){
 
         ArrayList<RuleObjectPOJO> ruleObject = new ArrayList<>();
@@ -53,6 +52,7 @@ public class RulesService {
 
             for (int m = 0; m < subBundleIds.length; m++) {
 
+                // Get the subBundleID and the Rule Name from the array
                 long subBundleId = subBundleIds[0];
                 String ruleName = subBundleList.get(m).getPurpose();
 
@@ -81,6 +81,8 @@ public class RulesService {
                         condition.append("AND ");
                 }
 
+                // Get a list of all the Recommendation_Objects with the specified criteria_id, so we can extract
+                // their information and build the string for the action field of the JSON
                 List<Recommendation_Object> recommendObjects = recommendObjectRepository.getByRecommendation_object_id(recom_id);
                 StringBuilder action = new StringBuilder();
                 // TODO: If recommendObjects.size() >= 1
@@ -105,9 +107,10 @@ public class RulesService {
     }
 
     /**
-     * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body paramter) of the POST request and
+     * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body parameter) of the POST request and
      * parses the objects, and enters the information into the parent_bundle, sub_bundle, criteria_bundle,
-     * criteria_object,
+     * criteria_object, reccommendation_bundle, recommendation_object tables.
+     *
      * @param parentBundle ParentBundlePOJO representing the JSON string that was passed to the POST request
      * @return "Success" if successful // TODO: Modify return value?
      */
