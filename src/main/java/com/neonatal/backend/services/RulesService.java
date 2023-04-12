@@ -131,36 +131,40 @@ public class RulesService {
                 SubBundlePOJO objSubBundle = subBundles.get(i);
                 Sub_Bundle subBundle = subBundleRepository.save(new Sub_Bundle(objSubBundle.getBundle(),
                         objSubBundle.getPurpose(), parentBundleId));
-
+                for(int j=0;j<objSubBundle.getCriteriasName().size();j++) {
                 // Save to the Criteria Bundles table, create an object to extract its ID, we need it
-                Criteria_Bundles criteria_bundles = criteriaBundlesRepository.save(new Criteria_Bundles(objSubBundle.getCriteriasName().get(i),
+                	Criteria_Bundles criteria_bundles = criteriaBundlesRepository.save(new Criteria_Bundles(objSubBundle.getCriteriasName().get(j),
                         parentBundleId, subBundle.getSub_bundle_id()));
-                long criteriaBundleID = criteria_bundles.getCriteria_bundles_id();
-                System.out.println("Criteria Bundle ID: " + criteriaBundleID);
+                	long criteriaBundleID = criteria_bundles.getCriteria_bundles_id();
+                	System.out.println("Criteria Bundle ID: " + criteriaBundleID);
 
                 // Save to the Recommendation Bundle, create that object to extract its id as well
-                Recommendation_Bundle recommendation_bundle = recommendBundleRepository.save(new Recommendation_Bundle(subBundle.getSub_bundle_id(),
+                	Recommendation_Bundle recommendation_bundle = recommendBundleRepository.save(new Recommendation_Bundle(subBundle.getSub_bundle_id(),
                         parentBundleId, criteriaBundleID));
-                long recommendationBundleID = recommendation_bundle.getRecommendation_bundle_id();
-                System.out.println("Recommendation Bundle ID: " + recommendationBundleID);
+                	long recommendationBundleID = recommendation_bundle.getRecommendation_bundle_id();
+                	System.out.println("Recommendation Bundle ID: " + recommendationBundleID);
 
                 // Here we extract all the criteria and recommendation objects as a list of lists for row submission
-                List<List<CriteriaObjectPOJO>> criteriaObjectList = objSubBundle.getCriteriaObjectList();
-                List<List<RecommendationObjectPOJO>> recomendObjectList = objSubBundle.getRecommendationObjectList();
+                	List<List<CriteriaObjectPOJO>> criteriaObjectList = objSubBundle.getCriteriaObjectList();
+                	List<List<RecommendationObjectPOJO>> recomendObjectList = objSubBundle.getRecommendationObjectList();
 
                 // Iterate through the criteriaOBjectList, convert them to Criteria_Object entity lists, and write them
-                for (List<CriteriaObjectPOJO> objList : criteriaObjectList) {
+                	for (List<CriteriaObjectPOJO> objList : criteriaObjectList) 
+                	{
                     List<Criteria_Object> entityObject = mapCriteriaObjectToEntity(objList, criteriaBundleID);
                     criteriaObjectRepository.saveAll(entityObject);
-                }
+                	}
+             
+           
                 // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
                 for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
                     List<Recommendation_Object> entityObject = mapRecomOBjectToEntity(objList, recommendationBundleID);
                     recommendObjectRepository.saveAll(entityObject);
                 }
-            }
-
-        } catch (Exception e) {
+              }
+           }
+        }          
+        catch (Exception e) {
             e.printStackTrace();
         }
 

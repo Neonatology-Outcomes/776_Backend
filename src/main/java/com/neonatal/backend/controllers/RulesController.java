@@ -36,7 +36,7 @@ public class RulesController {
      * @param parentBundle ParentBundlePOJO object representing the JSON that is passed
      * @return A string "success" if successful // TODO: Change this?
      */
-    @RequestMapping("/saveBundle")
+    @RequestMapping(value= "/saveBundle/" , method= RequestMethod.POST)
     @PostMapping
     public String saveBundle(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
 
