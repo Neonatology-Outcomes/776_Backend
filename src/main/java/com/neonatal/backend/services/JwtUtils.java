@@ -60,7 +60,12 @@ public class JwtUtils {
         DecodedJWT decodedJWT = JWT.require(algorithm).build().verify(jwt);
         return decodedJWT.getSubject();
     }
-
+    
+    /**
+     * Utility function to check the authorization for a endpoint request.
+     *
+     * @param authorization the authorization header from the endpoint request
+     */
     public boolean checkAuthorization(String authorization){
         String jwt = authorization.substring(authorization.indexOf(" ") + 1);
         String user = decodeJwt(jwt);
