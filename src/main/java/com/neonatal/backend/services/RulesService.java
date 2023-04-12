@@ -51,7 +51,7 @@ public class RulesService {
             }
 
             for (int m = 0; m < subBundleIds.length; m++) {
-                
+
                 // Get the subBundleID and the Rule Name from the array
                 long subBundleId = subBundleIds[0];
                 String ruleName = subBundleList.get(m).getPurpose();
@@ -81,6 +81,8 @@ public class RulesService {
                         condition.append("AND ");
                 }
 
+                // Get a list of all the Recommendation_Objects with the specified criteria_id, so we can extract
+                // their information and build the string for the action field of the JSON
                 List<Recommendation_Object> recommendObjects = recommendObjectRepository.getByRecommendation_object_id(recom_id);
                 StringBuilder action = new StringBuilder();
                 // TODO: If recommendObjects.size() >= 1
@@ -108,7 +110,6 @@ public class RulesService {
      * Takes as input a ParentBUndlePOJO object (from the JSON passed to the body parameter) of the POST request and
      * parses the objects, and enters the information into the parent_bundle, sub_bundle, criteria_bundle,
      * criteria_object, reccommendation_bundle, recommendation_object tables.
-     * 
      * @param parentBundle ParentBundlePOJO representing the JSON string that was passed to the POST request
      * @return "Success" if successful // TODO: Modify return value?
      */

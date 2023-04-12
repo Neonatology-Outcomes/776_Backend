@@ -2,11 +2,10 @@ package com.neonatal.backend.controllers;
 
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
-import com.neonatal.backend.repositories.AssessmentRepository;
+import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 
 /**
@@ -19,7 +18,7 @@ public class RulesController {
     @Autowired
     private RulesService rulesService;
     @Autowired
-    private AssessmentRepository assessmentRepository;
+    private JwtUtils jwtUtils;
 
     /**
      * Gets all bundle information and returns them as a JSON array of rows with values
@@ -39,5 +38,17 @@ public class RulesController {
     @RequestMapping("/saveBundle")
     @PostMapping
     public String saveBundle(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
+
+    @RequestMapping("/getJWT")
+    @GetMapping
+    public String getJWT() {
+        System.out.println("JWT generated.");
+        return jwtUtils.encodeJwt("brandt"); }
+
+    @RequestMapping("/checkJWT")
+    @GetMapping
+    public boolean checkJWT(@RequestHeader("Authorization") String authorization) {
+        return jwtUtils.checkAuthorization(authorization);
+    }
 
 }
