@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigInteger;
 
@@ -11,12 +8,14 @@ import java.math.BigInteger;
  * Entity class for the sub_bundle table of the quality schema from the neonatal database
  */
 @Entity
+@SequenceGenerator(name="seq", initialValue = 1, allocationSize = 100)
 @Table(name = "sub_bundle", schema = "quality")
 public class Sub_Bundle {
 
     @Id
     @Column(name = "sub_bundle_id")
-    private BigInteger sub_bundle_id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long sub_bundle_id;
 
     @Column(name = "bundle_name")
     private String bundle_name;
@@ -37,11 +36,10 @@ public class Sub_Bundle {
     private String at_discharge;
 
     @Column(name = "parent_bundle_id")
-    private BigInteger parent_bundle_id;
+    private long parent_bundle_id;
 
-    public Sub_Bundle(BigInteger sub_bundle_id, String bundle_name, String purpose, String at_admission,
-                      String in_delivery_room, String in_nicu, String at_discharge, BigInteger parent_bundle_id) {
-        this.sub_bundle_id = sub_bundle_id;
+    public Sub_Bundle(String bundle_name, String purpose, String at_admission,
+                      String in_delivery_room, String in_nicu, String at_discharge, long parent_bundle_id) {
         this.bundle_name = bundle_name;
         this.purpose = purpose;
         this.at_admission = at_admission;
@@ -51,15 +49,20 @@ public class Sub_Bundle {
         this.parent_bundle_id = parent_bundle_id;
     }
 
+    public Sub_Bundle(String bundle_name, String purpose, long parent_bundle_id){
+        this.bundle_name = bundle_name;
+        this.purpose = purpose;
+        this.parent_bundle_id = parent_bundle_id;
+    }
     public Sub_Bundle() {
 
     }
 
-    public BigInteger getSub_bundle_id() {
+    public long getSub_bundle_id() {
         return sub_bundle_id;
     }
 
-    public void setSub_bundle_id(BigInteger sub_bundle_id) {
+    public void setSub_bundle_id(long sub_bundle_id) {
         this.sub_bundle_id = sub_bundle_id;
     }
 
@@ -111,11 +114,11 @@ public class Sub_Bundle {
         this.at_discharge = at_discharge;
     }
 
-    public BigInteger getParent_bundle_id() {
+    public long getParent_bundle_id() {
         return parent_bundle_id;
     }
 
-    public void setParent_bundle_id(BigInteger parent_bundle_id) {
+    public void setParent_bundle_id(long parent_bundle_id) {
         this.parent_bundle_id = parent_bundle_id;
     }
 }

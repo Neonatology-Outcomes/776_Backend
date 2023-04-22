@@ -1,20 +1,19 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * Entity class for the exceptionlist table in the quality schema of the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "exceptionlist", schema = "quality")
 public class Exceptionlist {
 
     @Id
     @Column(name = "exceptionid")
-    private int exceptionid;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long exceptionid;
 
     @Column(name = "exceptiontype")
     private String exceptiontype;
@@ -28,7 +27,7 @@ public class Exceptionlist {
     @Column(name = "exceptionmessage")
     private String exceptionmessage;
 
-    public Exceptionlist(int exceptionid, String exceptiontype, String loggedinuser, String uhid,
+    public Exceptionlist(long exceptionid, String exceptiontype, String loggedinuser, String uhid,
                          String exceptionmessage) {
         this.exceptionid = exceptionid;
         this.exceptiontype = exceptiontype;
@@ -41,11 +40,11 @@ public class Exceptionlist {
 
     }
 
-    public int getExceptionid() {
+    public long getExceptionid() {
         return exceptionid;
     }
 
-    public void setExceptionid(int exceptionid) {
+    public void setExceptionid(long exceptionid) {
         this.exceptionid = exceptionid;
     }
 

@@ -1,26 +1,27 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import javax.swing.text.html.HTMLDocument;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Iterator;
 
 /**
  * Entity class for the criteria_object table from the quality schema of the neonatal databse
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "criteria_object", schema = "quality")
 public class Criteria_Object {
 
     @Id
     @Column(name = "criteria_object_id")
-    private BigInteger criteria_object_id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long criteria_object_id;
 
     @Column(name = "criteria_bundles_id")
-    private BigInteger criteria_bundles_id;
+    private long criteria_bundles_id;
 
     @Column(name = "category_name")
     private String category_name;
@@ -32,10 +33,10 @@ public class Criteria_Object {
     private String type;
 
     @Column(name = "from_value")
-    private BigDecimal from_value;
+    private Float from_value;
 
     @Column(name = "to_value")
-    private BigDecimal to_value;
+    private Float to_value;
 
     @Column(name = "unit")
     private String unit;
@@ -55,41 +56,31 @@ public class Criteria_Object {
     @Column(name = "bin")
     private String bin;
 
-    public Criteria_Object(BigInteger criteria_object_id, BigInteger criteria_bundles_id, String category_name,
-                           String field_name, String type, BigDecimal from_value, BigDecimal to_value, String unit,
-                           String time, String medicine, String vent, String or_condition, String bin) {
-        this.criteria_object_id = criteria_object_id;
+    public Criteria_Object(long criteria_bundles_id, String field_name, String type, float from_value, String time) {
         this.criteria_bundles_id = criteria_bundles_id;
-        this.category_name = category_name;
         this.field_name = field_name;
         this.type = type;
         this.from_value = from_value;
-        this.to_value = to_value;
-        this.unit = unit;
         this.time = time;
-        this.medicine = medicine;
-        this.vent = vent;
-        this.or_condition = or_condition;
-        this.bin = bin;
     }
 
     public Criteria_Object() {
 
     }
 
-    public BigInteger getCriteria_object_id() {
+    public long getCriteria_object_id() {
         return criteria_object_id;
     }
 
-    public void setCriteria_object_id(BigInteger criteria_object_id) {
+    public void setCriteria_object_id(long criteria_object_id) {
         this.criteria_object_id = criteria_object_id;
     }
 
-    public BigInteger getCriteria_bundles_id() {
+    public long getCriteria_bundles_id() {
         return criteria_bundles_id;
     }
 
-    public void setCriteria_bundles_id(BigInteger criteria_bundles_id) {
+    public void setCriteria_bundles_id(long criteria_bundles_id) {
         this.criteria_bundles_id = criteria_bundles_id;
     }
 
@@ -117,19 +108,19 @@ public class Criteria_Object {
         this.type = type;
     }
 
-    public BigDecimal getFrom_value() {
+    public float getFrom_value() {
         return from_value;
     }
 
-    public void setFrom_value(BigDecimal from_value) {
+    public void setFrom_value(float from_value) {
         this.from_value = from_value;
     }
 
-    public BigDecimal getTo_value() {
+    public float getTo_value() {
         return to_value;
     }
 
-    public void setTo_value(BigDecimal to_value) {
+    public void setTo_value(float to_value) {
         this.to_value = to_value;
     }
 

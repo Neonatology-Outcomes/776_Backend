@@ -1,22 +1,19 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import java.math.BigInteger;
 
 /**
  * Entity class for the parent_bundle table of the quality schema from the neonatal database
  */
 @Entity
+@SequenceGenerator(name="seq", initialValue = 1, allocationSize = 100)
 @Table(name = "parent_bundle", schema = "quality")
 public class Parent_Bundle {
 
     @Id
-    @Column(name = "parent_bundle_id")
-    private BigInteger parent_bundle_id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long parent_bundle_id;
 
     @Column(name = "bundle_name")
     private String bundle_name;
@@ -33,9 +30,9 @@ public class Parent_Bundle {
     @Column(name = "branchname")
     private String branchname;
 
-    public Parent_Bundle(BigInteger parent_bundle_id, String bundle_name, String purpose, String is_delivery_room,
+    public Parent_Bundle(String bundle_name, String purpose, String is_delivery_room,
                          String is_sub_bundle, String branchname) {
-        this.parent_bundle_id = parent_bundle_id;
+        // this.parent_bundle_id = parent_bundle_id;
         this.bundle_name = bundle_name;
         this.purpose = purpose;
         this.is_delivery_room = is_delivery_room;
@@ -48,11 +45,11 @@ public class Parent_Bundle {
 
     }
 
-    public BigInteger getParent_bundle_id() {
+    public long getParent_bundle_id() {
         return parent_bundle_id;
     }
 
-    public void setParent_bundle_id(BigInteger parent_bundle_id) {
+    public void setParent_bundle_id(long parent_bundle_id) {
         this.parent_bundle_id = parent_bundle_id;
     }
 

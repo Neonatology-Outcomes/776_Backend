@@ -1,29 +1,67 @@
 package com.neonatal.backend.controllers;
 
-import com.neonatal.backend.entities.Assessment;
-import com.neonatal.backend.repositories.AssessmentRepository;
+import com.neonatal.backend.models.NurseTasks;
+import com.neonatal.backend.models.ParentBundlePOJO;
+import com.neonatal.backend.models.RuleObjectPOJO;
+import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that defines what GET, POST, etc. calls will be connected with which service method
+ * Class that defines what GET, POST calls related to the Rules and Actions tables
  */
-@RequestMapping("rules")  // Sets the end point for calls related to Rules Design
+
 @RestController
 public class RulesController {
 
     @Autowired
     private RulesService rulesService;
     @Autowired
-    private AssessmentRepository assessmentRepository;
+    private JwtUtils jwtUtils;
 
+    /**
+     * Gets all bundle information and returns them as a JSON array of rows with values
+     * for: Rule Name, Condition, Action
+     * @return an ArrayList of RUleOBjectPOJO that represents the JSON.
+     */
+    @RequestMapping("/getBundle")
     @GetMapping
-    public List<Assessment> rules(){ return assessmentRepository.findAll(); } // Get all Rules
+    public ArrayList<RuleObjectPOJO> getBundle(){ return rulesService.getAll(); } // Get all Rules
 
+
+    /**
+     * Saves the bundle passed as a JSON to the /saveBundle address into the database
+     * @param parentBundle ParentBundlePOJO object representing the JSON that is passed
+     * @return A string "success" if successful // TODO: Change this?
+     */
+    @RequestMapping(value= "/saveBundle/" , method= RequestMethod.POST)
     @PostMapping
-    public Assessment addRule(@RequestBody Assessment assessment){ return assessmentRepository.save(assessment); } // Input new rule to the database
+    public String saveBundle(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
+
+    @RequestMapping("/getJWT")
+    @GetMapping
+    public String getJWT() {
+        System.out.println("JWT generated.");
+        return jwtUtils.encodeJwt("brandt"); }
+
+    @RequestMapping("/checkJWT")
+    @GetMapping
+    public boolean checkJWT(@RequestHeader("Authorization") String authorization) {
+        return jwtUtils.checkAuthorization(authorization);
+    }
+    
+    @RequestMapping(value = "/getNurseDailyTasks/", method = RequestMethod.GET)
+	public List<NurseTasks> getNurseTasks() {
+		List<NurseTasks> nurseTasksList = null;
+		try {
+			nurseTasksList = rulesService.getNurseTasks();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nurseTasksList;
+	}
 
 }
