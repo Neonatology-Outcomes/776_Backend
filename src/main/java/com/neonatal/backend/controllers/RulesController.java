@@ -1,5 +1,6 @@
 package com.neonatal.backend.controllers;
 
+import com.neonatal.backend.models.NurseTasks;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
 import com.neonatal.backend.services.JwtUtils;
@@ -7,6 +8,7 @@ import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that defines what GET, POST calls related to the Rules and Actions tables
@@ -50,5 +52,16 @@ public class RulesController {
     public boolean checkJWT(@RequestHeader("Authorization") String authorization) {
         return jwtUtils.checkAuthorization(authorization);
     }
+    
+    @RequestMapping(value = "/getNurseDailyTasks/", method = RequestMethod.GET)
+	public List<NurseTasks> getNurseTasks() {
+		List<NurseTasks> nurseTasksList = null;
+		try {
+			nurseTasksList = rulesService.getNurseTasks();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nurseTasksList;
+	}
 
 }
