@@ -17,16 +17,6 @@ public class Assessment {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long assessment_id;
 
-    /*
-    @Column(name = "creationtime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationtime;
-
-    @Column(name = "modificationtime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationtime;
-     */
-
     @Column(name = "parent_bundle_id")
     private BigInteger parent_bundle_id;
 
@@ -64,24 +54,6 @@ public class Assessment {
     public void setAssessment_id(long assessment_id) {
         this.assessment_id = assessment_id;
     }
-
-    /*
-    public Date getCreationtime() {
-        return creationtime;
-    }
-
-    public void setCreationtime(Date creationtime) {
-        this.creationtime = creationtime;
-    }
-
-    public Date getModificationtime() {
-        return modificationtime;
-    }
-
-    public void setModificationtime(Date modificationtime) {
-        this.modificationtime = modificationtime;
-    }
-     */
 
     public BigInteger getParent_bundle_id() {
         return parent_bundle_id;
