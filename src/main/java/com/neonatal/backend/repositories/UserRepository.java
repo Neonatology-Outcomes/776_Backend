@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // Query the databse to see if there is a username by the name of the username parameter
-    @Query(value = "SELECT * FROM quality.user WHERE username = :username", nativeQuery = true)
-    public List<User> getByUsername (String username);
+    // Query the database to retrieve the roleid of the passed username
+    @Query(value = "SELECT roleid FROM quality.user WHERE username = :username", nativeQuery = true)
+    public String getRoleidByUsername (String username);
 }

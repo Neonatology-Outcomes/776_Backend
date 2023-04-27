@@ -1,11 +1,14 @@
 package com.neonatal.backend.controllers;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.neonatal.backend.models.NurseTasks;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
 import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,25 @@ public class RulesController {
      * for: Rule Name, Condition, Action
      * @return an ArrayList of RUleOBjectPOJO that represents the JSON.
      */
-    @RequestMapping("/getBundle")
+    @RequestMapping("/getBundles")
     @GetMapping
-    public ArrayList<RuleObjectPOJO> getBundle(){ return rulesService.getAll(); } // Get all Rules
+    public ResponseEntity<?> getBundle(@RequestHeader("Authorization") String authorization){
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(rulesService.getAll(), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(rulesService.getAll(), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     /**
@@ -39,18 +58,51 @@ public class RulesController {
      */
     @RequestMapping(value= "/saveBundle/" , method= RequestMethod.POST)
     @PostMapping
-    public String saveBundle(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
+    public ResponseEntity<String> saveBundle(@RequestBody ParentBundlePOJO parentBundle,
+                                             @RequestHeader("Authorization") String authorization){
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(rulesService.addRules(parentBundle), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(rulesService.addRules(parentBundle), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @RequestMapping("/getJWT")
     @GetMapping
-    public String getJWT() {
+    public ResponseEntity<String> getJWT() {
         System.out.println("JWT generated.");
-        return jwtUtils.encodeJwt("brandt"); }
+        return new ResponseEntity<>(jwtUtils.encodeJwt("brandt"), HttpStatus.OK);
+    }
 
     @RequestMapping("/checkJWT")
     @GetMapping
-    public boolean checkJWT(@RequestHeader("Authorization") String authorization) {
-        return jwtUtils.checkAuthorization(authorization);
+    public ResponseEntity<?> checkJWT(@RequestHeader("Authorization") String authorization) {
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(roleID, HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(roleID, HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+
     }
     
     @RequestMapping(value = "/getNurseDailyTasks/", method = RequestMethod.GET)
