@@ -1,7 +1,9 @@
 package com.neonatal.backend.controllers;
 
+import com.neonatal.backend.entities.User;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
+import com.neonatal.backend.repositories.UserRepository;
 import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,15 @@ public class RulesController {
     private RulesService rulesService;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Gets all bundle information and returns them as a JSON array of rows with values
      * for: Rule Name, Condition, Action
      * @return an ArrayList of RUleOBjectPOJO that represents the JSON.
      */
-    @RequestMapping("/getBundle")
+    @RequestMapping("/getBundles")
     @GetMapping
     public ArrayList<RuleObjectPOJO> getBundle(){ return rulesService.getAll(); } // Get all Rules
 
@@ -47,8 +51,17 @@ public class RulesController {
 
     @RequestMapping("/checkJWT")
     @GetMapping
-    public boolean checkJWT(@RequestHeader("Authorization") String authorization) {
-        return jwtUtils.checkAuthorization(authorization);
+    public int checkJWT(@RequestHeader("Authorization") String authorization) {
+        int roleID = jwtUtils.checkAuthorization(authorization);
+        if (roleID == 1){
+            // USER IS A NURSE
+        } else if (roleID == 2) {
+            // USER IS AN ADMIN
+        } else {
+            // USER DOES NOT EXIST
+        }
+        return roleID;
     }
+
 
 }
