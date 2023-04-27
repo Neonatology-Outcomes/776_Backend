@@ -28,6 +28,7 @@ public class Assessment {
     private Date modificationtime;
      */
 
+
     @Column(name = "parent_bundle_id")
     private BigInteger parent_bundle_id;
 
@@ -65,24 +66,6 @@ public class Assessment {
     public void setAssessment_id(long assessment_id) {
         this.assessment_id = assessment_id;
     }
-
-    /*
-    public Date getCreationtime() {
-        return creationtime;
-    }
-
-    public void setCreationtime(Date creationtime) {
-        this.creationtime = creationtime;
-    }
-
-    public Date getModificationtime() {
-        return modificationtime;
-    }
-
-    public void setModificationtime(Date modificationtime) {
-        this.modificationtime = modificationtime;
-    }
-     */
 
     public BigInteger getParent_bundle_id() {
         return parent_bundle_id;
