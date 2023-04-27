@@ -3,7 +3,6 @@ package com.neonatal.backend.controllers;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
-import com.neonatal.backend.repositories.UserRepository;
 import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
