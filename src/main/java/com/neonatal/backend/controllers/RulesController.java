@@ -1,5 +1,6 @@
 package com.neonatal.backend.controllers;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.neonatal.backend.entities.User;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
@@ -7,6 +8,8 @@ import com.neonatal.backend.repositories.UserRepository;
 import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
@@ -31,7 +34,10 @@ public class RulesController {
      */
     @RequestMapping("/getBundles")
     @GetMapping
-    public ArrayList<RuleObjectPOJO> getBundle(){ return rulesService.getAll(); } // Get all Rules
+    public ResponseEntity<ArrayList<RuleObjectPOJO>> getBundle(){
+        // Get all Rules
+        return new ResponseEntity<>(rulesService.getAll(), HttpStatus.OK);
+    }
 
 
     /**
@@ -41,27 +47,37 @@ public class RulesController {
      */
     @RequestMapping("/saveBundle")
     @PostMapping
-    public String saveBundle(@RequestBody ParentBundlePOJO parentBundle){ return rulesService.addRules(parentBundle);}
+    public ResponseEntity<String> saveBundle(@RequestBody ParentBundlePOJO parentBundle){
+        return new ResponseEntity<>(rulesService.addRules(parentBundle), HttpStatus.OK);
+    }
 
     @RequestMapping("/getJWT")
     @GetMapping
     public String getJWT() {
         System.out.println("JWT generated.");
-        return jwtUtils.encodeJwt("brandt"); }
+        return jwtUtils.encodeJwt("brandt");
+    }
 
     @RequestMapping("/checkJWT")
     @GetMapping
-    public int checkJWT(@RequestHeader("Authorization") String authorization) {
-        int roleID = jwtUtils.checkAuthorization(authorization);
-        if (roleID == 1){
-            // USER IS A NURSE
-        } else if (roleID == 2) {
-            // USER IS AN ADMIN
-        } else {
-            // USER DOES NOT EXIST
+    public ResponseEntity<?> checkJWT(@RequestHeader("Authorization") String authorization) {
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(roleID, HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(roleID, HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
         }
-        return roleID;
-    }
 
+
+    }
 
 }
