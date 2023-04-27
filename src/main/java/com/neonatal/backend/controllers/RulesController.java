@@ -53,9 +53,9 @@ public class RulesController {
 
     @RequestMapping("/getJWT")
     @GetMapping
-    public String getJWT() {
+    public ResponseEntity<String> getJWT() {
         System.out.println("JWT generated.");
-        return jwtUtils.encodeJwt("brandt");
+        return new ResponseEntity<>(jwtUtils.encodeJwt("brandt"), HttpStatus.OK);
     }
 
     @RequestMapping("/checkJWT")
@@ -76,7 +76,6 @@ public class RulesController {
         } catch (TokenExpiredException tee) {
             return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
         }
-
 
     }
 
