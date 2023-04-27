@@ -1,9 +1,6 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigInteger;
 
@@ -11,12 +8,14 @@ import java.math.BigInteger;
  * Entity clas for the user table of the quality schema from the neonatal databse
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "user", schema = "quality")
 public class User {
 
     @Id
     @Column(name = "id")
-    private BigInteger id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long id;
 
     @Column(name = "username")
     private String username;
@@ -36,7 +35,7 @@ public class User {
     @Column(name = "roleid")
     private String roleid;
 
-    public User(BigInteger id, String username, String password, String emailaddress, String firstname,
+    public User(long id, String username, String password, String emailaddress, String firstname,
                 String lastname, String roleid) {
         this.id = id;
         this.username = username;
@@ -47,11 +46,15 @@ public class User {
         this.roleid = roleid;
     }
 
-    public BigInteger getId() {
+    public User() {
+
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 

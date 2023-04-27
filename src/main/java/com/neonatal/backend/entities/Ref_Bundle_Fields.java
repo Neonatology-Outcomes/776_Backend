@@ -1,20 +1,19 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * Entity class for the ref_bundle_fields table of the quality schema from the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name = "ref_bundle_fields", schema = "quality")
 public class Ref_Bundle_Fields {
 
     @Id
     @Column(name = "fieldid")
-    private int fieldid;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long fieldid;
 
     @Column(name = "fieldname")
     private String fieldname;
@@ -22,7 +21,7 @@ public class Ref_Bundle_Fields {
     @Column(name = "category_id")
     private int category_id;
 
-    public Ref_Bundle_Fields(int fieldid, String fieldname, int category_id) {
+    public Ref_Bundle_Fields(long fieldid, String fieldname, int category_id) {
         this.fieldid = fieldid;
         this.fieldname = fieldname;
         this.category_id = category_id;
@@ -32,11 +31,11 @@ public class Ref_Bundle_Fields {
 
     }
 
-    public int getFieldid() {
+    public long getFieldid() {
         return fieldid;
     }
 
-    public void setFieldid(int fieldid) {
+    public void setFieldid(long fieldid) {
         this.fieldid = fieldid;
     }
 

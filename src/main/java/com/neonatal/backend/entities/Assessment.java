@@ -8,15 +8,18 @@ import java.util.Date;
  * Entity class for the assessment table within the neonatal database
  */
 @Entity
+@SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name="assessment", schema = "quality")
 public class Assessment {
 
     @Id
     @Column(name="assessment_id")
-    private BigInteger assessment_id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    private long assessment_id;
 
     /*
     @Column(name = "creationtime")
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationtime;
 
@@ -24,6 +27,7 @@ public class Assessment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationtime;
      */
+
 
     @Column(name = "parent_bundle_id")
     private BigInteger parent_bundle_id;
@@ -41,7 +45,7 @@ public class Assessment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date entrytimestamp;
 
-    public Assessment(BigInteger assessment_id, BigInteger parent_bundle_id, BigInteger sub_bundle_id,
+    public Assessment(long assessment_id, BigInteger parent_bundle_id, BigInteger sub_bundle_id,
                       String uhid, String field_name, Date entrytimestamp) {
         this.assessment_id = assessment_id;
         this.parent_bundle_id = parent_bundle_id;
@@ -55,31 +59,13 @@ public class Assessment {
 
     }
 
-    public BigInteger getAssessment_id() {
+    public long getAssessment_id() {
         return assessment_id;
     }
 
-    public void setAssessment_id(BigInteger assessment_id) {
+    public void setAssessment_id(long assessment_id) {
         this.assessment_id = assessment_id;
     }
-
-    /*
-    public Date getCreationtime() {
-        return creationtime;
-    }
-
-    public void setCreationtime(Date creationtime) {
-        this.creationtime = creationtime;
-    }
-
-    public Date getModificationtime() {
-        return modificationtime;
-    }
-
-    public void setModificationtime(Date modificationtime) {
-        this.modificationtime = modificationtime;
-    }
-     */
 
     public BigInteger getParent_bundle_id() {
         return parent_bundle_id;
