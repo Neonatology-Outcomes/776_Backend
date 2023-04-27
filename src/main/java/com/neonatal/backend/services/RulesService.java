@@ -168,7 +168,7 @@ public class RulesService {
            
                     // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
                     for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
-                        List<Recommendation_Object> entityObject = mapRecomOBjectToEntity(objList, recommendationBundleID);
+                        List<Recommendation_Object> entityObject = mapRecomObjectToEntity(objList, recommendationBundleID);
                         recommendObjectRepository.saveAll(entityObject);
                     }
                 }
