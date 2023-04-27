@@ -1,6 +1,7 @@
 package com.neonatal.backend.controllers;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.neonatal.backend.models.NurseTasks;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
 import com.neonatal.backend.services.JwtUtils;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that defines what GET, POST calls related to the Rules and Actions tables
@@ -54,7 +56,7 @@ public class RulesController {
      * @param parentBundle ParentBundlePOJO object representing the JSON that is passed
      * @return A string "success" if successful // TODO: Change this?
      */
-    @RequestMapping("/saveBundle")
+    @RequestMapping(value= "/saveBundle/" , method= RequestMethod.POST)
     @PostMapping
     public ResponseEntity<String> saveBundle(@RequestBody ParentBundlePOJO parentBundle,
                                              @RequestHeader("Authorization") String authorization){
@@ -102,5 +104,16 @@ public class RulesController {
         }
 
     }
+    
+    @RequestMapping(value = "/getNurseDailyTasks/", method = RequestMethod.GET)
+	public List<NurseTasks> getNurseTasks() {
+		List<NurseTasks> nurseTasksList = null;
+		try {
+			nurseTasksList = rulesService.getNurseTasks();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nurseTasksList;
+	}
 
 }
