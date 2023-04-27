@@ -28,6 +28,8 @@ public class RulesService {
     private RecommendationObjectRepository recommendObjectRepository;
     @Autowired
     private ParentBundleRepository parentBundleRepository;
+    @Autowired 
+    private BirthDetailsRepository birthDetailsRepository;
 
     /**
      * Gets the list of all Rule Names and their associated Conditions and Actions and returns them
@@ -132,25 +134,28 @@ public class RulesService {
                 SubBundlePOJO objSubBundle = subBundles.get(i);
                 Sub_Bundle subBundle = subBundleRepository.save(new Sub_Bundle(objSubBundle.getBundle(),
                         objSubBundle.getPurpose(), parentBundleId));
-
-                // Save to the Criteria Bundles table, create an object to extract its ID, we need it
-                Criteria_Bundles criteria_bundles = criteriaBundlesRepository.save(new Criteria_Bundles(objSubBundle.getCriteriasName().get(i),
+                
+                // Loop by size of CriteriasName field
+                for(int j = 0; j < objSubBundle.getCriteriasName().size(); j++) {
+                    
+                    // Save to the Criteria Bundles table, create an object to extract its ID, we need it
+                	Criteria_Bundles criteria_bundles = criteriaBundlesRepository.save(new Criteria_Bundles(objSubBundle.getCriteriasName().get(j),
                         parentBundleId, subBundle.getSub_bundle_id()));
-                long criteriaBundleID = criteria_bundles.getCriteria_bundles_id();
-                System.out.println("Criteria Bundle ID: " + criteriaBundleID);
+                	long criteriaBundleID = criteria_bundles.getCriteria_bundles_id();
+                	System.out.println("Criteria Bundle ID: " + criteriaBundleID);
 
-                // Save to the Recommendation Bundle, create that object to extract its id as well
-                Recommendation_Bundle recommendation_bundle = recommendBundleRepository.save(new Recommendation_Bundle(subBundle.getSub_bundle_id(),
+                    // Save to the Recommendation Bundle, create that object to extract its id as well
+                	Recommendation_Bundle recommendation_bundle = recommendBundleRepository.save(new Recommendation_Bundle(subBundle.getSub_bundle_id(),
                         parentBundleId, criteriaBundleID));
-                long recommendationBundleID = recommendation_bundle.getRecommendation_bundle_id();
-                System.out.println("Recommendation Bundle ID: " + recommendationBundleID);
+                	long recommendationBundleID = recommendation_bundle.getRecommendation_bundle_id();
+                	System.out.println("Recommendation Bundle ID: " + recommendationBundleID);
 
-                // Here we extract all the criteria and recommendation objects as a list of lists for row submission
-                List<List<CriteriaObjectPOJO>> criteriaObjectList = objSubBundle.getCriteriaObjectList();
-                List<List<RecommendationObjectPOJO>> recomendObjectList = objSubBundle.getRecommendationObjectList();
+                    // Here we extract all the criteria and recommendation objects as a list of lists for row submission
+                	List<List<CriteriaObjectPOJO>> criteriaObjectList = objSubBundle.getCriteriaObjectList();
+                	List<List<RecommendationObjectPOJO>> recomendObjectList = objSubBundle.getRecommendationObjectList();
 
-                // Iterate through the criteriaOBjectList, convert them to Criteria_Object entity lists, and write them
-                for (List<CriteriaObjectPOJO> objList : criteriaObjectList) {
+                    // Iterate through the criteriaOBjectList, convert them to Criteria_Object entity lists, and write them
+                	for (List<CriteriaObjectPOJO> objList : criteriaObjectList) {
                     List<Criteria_Object> entityObject = mapCriteriaObjectToEntity(objList, criteriaBundleID);
                     criteriaObjectRepository.saveAll(entityObject);
                 }
@@ -158,10 +163,18 @@ public class RulesService {
                 for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
                     List<Recommendation_Object> entityObject = mapRecomObjectToEntity(objList, recommendationBundleID);
                     recommendObjectRepository.saveAll(entityObject);
+                	}
+             
+           
+                    // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
+                    for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
+                        List<Recommendation_Object> entityObject = mapRecomOBjectToEntity(objList, recommendationBundleID);
+                        recommendObjectRepository.saveAll(entityObject);
+                    }
                 }
             }
-
-        } catch (Exception e) {
+        }          
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -207,4 +220,50 @@ public class RulesService {
         }
         return recomend_objectList;
     }
+  
+    public List<NurseTasks> getNurseTasks() {		
+		List<NurseTasks> returnList = new ArrayList<>();
+		try {
+			List<Birth_Details> babyList = birthDetailsRepository.getBirthDetails();
+			List<Recommendation_Object> recommendations = recommendObjectRepository.getAllRecommendations();
+
+			List<String> recommendationStr = new ArrayList<>();
+			for(Recommendation_Object obj : recommendations) {
+				StringBuilder str = new StringBuilder();
+				if(obj.getField_name() != null) {
+					str.append(obj.getField_name());
+					if(obj.getType() != null) str.append(" " + obj.getType());
+					if(obj.getFrom_value() != null) str.append(" " + obj.getFrom_value());
+					if(obj.getTime() != null) str.append(" " + obj.getTime());
+					if(obj.getUnit() != null) str.append(" " + obj.getUnit());
+					if(obj.getRepeat_time() != null && obj.getRepeat_time() > 0) {
+						if(obj.getRepeat_time() == 1) {
+							str.append(" once");
+						}else {
+							str.append(" " + obj.getRepeat_time());
+							str.append(" times");
+						}
+					}
+					if(obj.getRepeat_unit() != null) {
+						str.append(" in a" + obj.getRepeat_unit());
+					}
+					recommendationStr.add(str.toString());
+				}
+				
+			}
+			for (Birth_Details babyObj : babyList) {
+				NurseTasks nurseObj = new NurseTasks();
+				nurseObj.setUhid(babyObj.getUhid());
+				nurseObj.setBirth_weight(babyObj.getBirth_weight());
+				nurseObj.setDateofbirth(babyObj.getDateofbirth());
+				nurseObj.setTasks(recommendationStr);
+				returnList.add(nurseObj);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return returnList;
+	}
 }

@@ -18,5 +18,8 @@ public interface RecommendationObjectRepository extends JpaRepository<Recommenda
 
     @Query(value = "SELECT * FROM quality.recommendation_object WHERE recommendation_bundle_id = :id", nativeQuery = true)
     public List<Recommendation_Object> getByRecommendation_object_id(Long id);
+    
+    @Query(value = "SELECT * FROM quality.recommendation_object", nativeQuery = true)
+    public List<Recommendation_Object> getAllRecommendations();
 
 }
