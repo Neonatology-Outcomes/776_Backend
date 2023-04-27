@@ -1,7 +1,6 @@
 package com.neonatal.backend.controllers;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.neonatal.backend.entities.User;
 import com.neonatal.backend.models.ParentBundlePOJO;
 import com.neonatal.backend.models.RuleObjectPOJO;
 import com.neonatal.backend.repositories.UserRepository;
@@ -24,8 +23,6 @@ public class RulesController {
     private RulesService rulesService;
     @Autowired
     private JwtUtils jwtUtils;
-    @Autowired
-    private UserRepository userRepository;
 
     /**
      * Gets all bundle information and returns them as a JSON array of rows with values
