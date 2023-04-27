@@ -65,11 +65,11 @@ public class JwtUtils {
      * Utility function to check the authorization for a endpoint request.
      *
      * @param authorization the authorization header from the endpoint request
+     * @return 0 if the user does not exist. 1 if the user is a nurse.  2 if the user is admin
      */
     public int checkAuthorization(String authorization){
         String jwt = authorization.substring(authorization.indexOf(" ") + 1);
         String user = decodeJwt(jwt);
-        // List<User> userList = userRepository.getByUsername(user);
         int roleID = Integer.valueOf(userRepository.getRoleidByUsername(user));
         if (roleID == 1){
             // USER IS A NURSE
