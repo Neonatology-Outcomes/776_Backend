@@ -70,7 +70,6 @@ public class JwtUtils {
     public int checkAuthorization(String authorization){
         String jwt = authorization.substring(authorization.indexOf(" ") + 1);
         String user = decodeJwt(jwt);
-        // List<User> userList = userRepository.getByUsername(user);
         int roleID = Integer.valueOf(userRepository.getRoleidByUsername(user));
         if (roleID == 1){
             // USER IS A NURSE
