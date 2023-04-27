@@ -19,6 +19,7 @@ public class Assessment {
 
     /*
     @Column(name = "creationtime")
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationtime;
 

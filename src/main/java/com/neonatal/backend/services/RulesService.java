@@ -158,6 +158,11 @@ public class RulesService {
                 	for (List<CriteriaObjectPOJO> objList : criteriaObjectList) {
                     List<Criteria_Object> entityObject = mapCriteriaObjectToEntity(objList, criteriaBundleID);
                     criteriaObjectRepository.saveAll(entityObject);
+                }
+                // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
+                for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
+                    List<Recommendation_Object> entityObject = mapRecomObjectToEntity(objList, recommendationBundleID);
+                    recommendObjectRepository.saveAll(entityObject);
                 	}
              
            
@@ -205,7 +210,7 @@ public class RulesService {
      *                 to be entered into the recommendation_bundle_id for each entry.
      * @return
      */
-    private List<Recommendation_Object> mapRecomOBjectToEntity(List<RecommendationObjectPOJO> recomendObjects, long bundleID){
+    private List<Recommendation_Object> mapRecomObjectToEntity(List<RecommendationObjectPOJO> recomendObjects, long bundleID){
         List<Recommendation_Object> recomend_objectList = new ArrayList<>();
         for (RecommendationObjectPOJO recomendObject: recomendObjects){
             Recommendation_Object entityObject = new Recommendation_Object(bundleID, recomendObject.getCategory_name(),

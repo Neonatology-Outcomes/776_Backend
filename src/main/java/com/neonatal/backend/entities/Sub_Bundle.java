@@ -14,7 +14,8 @@ public class Sub_Bundle {
 
     @Id
     @Column(name = "sub_bundle_id")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq"
+    )
     private long sub_bundle_id;
 
     @Column(name = "bundle_name")
