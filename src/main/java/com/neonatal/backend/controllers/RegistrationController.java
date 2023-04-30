@@ -4,6 +4,7 @@ import com.neonatal.backend.entities.Assessment;
 import com.neonatal.backend.entities.User;
 import com.neonatal.backend.entities.Role;
 import com.neonatal.backend.repositories.AssessmentRepository;
+import com.neonatal.backend.services.JwtUtils;
 import com.neonatal.backend.services.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,9 +63,10 @@ public class RegistrationController {
 	
 	 // Show Register page.
 	   @RequestMapping(value = "/register", method = RequestMethod.GET)
-	   public String viewRegister(Model model) {
-
-	      return "registerPage";
+	   public String viewRegister(@RequestBody User user) {
+		   String jwtToken = JwtUtils.encode(user.getUsername());
+		   userRepository.save(user);
+	      return jwtToken;
 	   }
 
 	   // This method is called to save the registration information.
