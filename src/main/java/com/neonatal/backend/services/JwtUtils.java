@@ -68,8 +68,7 @@ public class JwtUtils {
      * @return 0 if the user does not exist. 1 if the user is a nurse.  2 if the user is admin
      */
     public int checkAuthorization(String authorization){
-     */
-    public boolean checkAuthorization(String authorization){
+
         String jwt = authorization.substring(authorization.indexOf(" ") + 1);
         String user = decodeJwt(jwt);
         int roleID = Integer.valueOf(userRepository.getRoleidByUsername(user));
