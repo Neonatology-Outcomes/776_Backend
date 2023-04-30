@@ -45,6 +45,16 @@ public class User {
         this.lastname = lastname;
         this.roleid = roleid;
     }
+    
+    public User(String username, String password, String emailaddress, String firstname,
+            String lastname, String roleid) {
+    this.username = username;
+    this.password = password;
+    this.emailaddress = emailaddress;
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.roleid = roleid;
+}
 
     public User() {
 
