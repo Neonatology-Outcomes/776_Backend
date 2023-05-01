@@ -28,6 +28,8 @@ public class RulesService {
     private RecommendationObjectRepository recommendObjectRepository;
     @Autowired
     private ParentBundleRepository parentBundleRepository;
+    @Autowired 
+    private BirthDetailsRepository birthDetailsRepository;
 
     /**
      * Gets the list of all Rule Names and their associated Conditions and Actions and returns them
@@ -156,12 +158,17 @@ public class RulesService {
                 	for (List<CriteriaObjectPOJO> objList : criteriaObjectList) {
                     List<Criteria_Object> entityObject = mapCriteriaObjectToEntity(objList, criteriaBundleID);
                     criteriaObjectRepository.saveAll(entityObject);
+                }
+                // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
+                for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
+                    List<Recommendation_Object> entityObject = mapRecomObjectToEntity(objList, recommendationBundleID);
+                    recommendObjectRepository.saveAll(entityObject);
                 	}
              
            
                     // Iterate through the recomendOBjectLIst, convert them to Recommend_Object entity lists, and write them
                     for (List<RecommendationObjectPOJO> objList : recomendObjectList) {
-                        List<Recommendation_Object> entityObject = mapRecomOBjectToEntity(objList, recommendationBundleID);
+                        List<Recommendation_Object> entityObject = mapRecomObjectToEntity(objList, recommendationBundleID);
                         recommendObjectRepository.saveAll(entityObject);
                     }
                 }
@@ -203,7 +210,7 @@ public class RulesService {
      *                 to be entered into the recommendation_bundle_id for each entry.
      * @return
      */
-    private List<Recommendation_Object> mapRecomOBjectToEntity(List<RecommendationObjectPOJO> recomendObjects, long bundleID){
+    private List<Recommendation_Object> mapRecomObjectToEntity(List<RecommendationObjectPOJO> recomendObjects, long bundleID){
         List<Recommendation_Object> recomend_objectList = new ArrayList<>();
         for (RecommendationObjectPOJO recomendObject: recomendObjects){
             Recommendation_Object entityObject = new Recommendation_Object(bundleID, recomendObject.getCategory_name(),
@@ -213,4 +220,50 @@ public class RulesService {
         }
         return recomend_objectList;
     }
+  
+    public List<NurseTasks> getNurseTasks() {		
+		List<NurseTasks> returnList = new ArrayList<>();
+		try {
+			List<Birth_Details> babyList = birthDetailsRepository.getBirthDetails();
+			List<Recommendation_Object> recommendations = recommendObjectRepository.getAllRecommendations();
+
+			List<String> recommendationStr = new ArrayList<>();
+			for(Recommendation_Object obj : recommendations) {
+				StringBuilder str = new StringBuilder();
+				if(obj.getField_name() != null) {
+					str.append(obj.getField_name());
+					if(obj.getType() != null) str.append(" " + obj.getType());
+					if(obj.getFrom_value() != null) str.append(" " + obj.getFrom_value());
+					if(obj.getTime() != null) str.append(" " + obj.getTime());
+					if(obj.getUnit() != null) str.append(" " + obj.getUnit());
+					if(obj.getRepeat_time() != null && obj.getRepeat_time() > 0) {
+						if(obj.getRepeat_time() == 1) {
+							str.append(" once");
+						}else {
+							str.append(" " + obj.getRepeat_time());
+							str.append(" times");
+						}
+					}
+					if(obj.getRepeat_unit() != null) {
+						str.append(" in a" + obj.getRepeat_unit());
+					}
+					recommendationStr.add(str.toString());
+				}
+				
+			}
+			for (Birth_Details babyObj : babyList) {
+				NurseTasks nurseObj = new NurseTasks();
+				nurseObj.setUhid(babyObj.getUhid());
+				nurseObj.setBirth_weight(babyObj.getBirth_weight());
+				nurseObj.setDateofbirth(babyObj.getDateofbirth());
+				nurseObj.setTasks(recommendationStr);
+				returnList.add(nurseObj);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return returnList;
+	}
 }

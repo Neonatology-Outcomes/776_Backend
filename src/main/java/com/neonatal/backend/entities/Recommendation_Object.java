@@ -107,11 +107,11 @@ public class Recommendation_Object {
         this.type = type;
     }
 
-    public float getFrom_value() {
+    public Float getFrom_value() {
         return from_value;
     }
 
-    public void setFrom_value(float from_value) {
+    public void setFrom_value(Float from_value) {
         this.from_value = from_value;
     }
 
@@ -155,11 +155,11 @@ public class Recommendation_Object {
         this.bin = bin;
     }
 
-    public int getRepeat_time() {
+    public Integer getRepeat_time() {
         return repeat_time;
     }
 
-    public void setRepeat_time(int repeat_time) {
+    public void setRepeat_time(Integer repeat_time) {
         this.repeat_time = repeat_time;
     }
 
