@@ -1,6 +1,8 @@
 package com.neonatal.backend.models;
 
 import java.util.List;
+import com.neonatal.backend.entities.Criteria_Object;
+import com.neonatal.backend.entities.Recommendation_Object;
 
 public class SubBundlePOJO {
     private String parentBundle;
@@ -12,10 +14,10 @@ public class SubBundlePOJO {
     private List<String> criteriasName;
     private List<String> criteriasCategories;
     private List<String> criteriasFields;
-    private List<List<CriteriaObjectPOJO>> criteriaObjectList;
+    private List<List<Criteria_Object>> criteriaObjectList;
     private List<String> recommendationCategories;
     private List<String> recommendationFields;
-    private List<List<RecommendationObjectPOJO>> recommendationObjectList;
+    private List<List<Recommendation_Object>> recommendationObjectList;
 
     public String getParentBundle() {
         return parentBundle;
@@ -89,11 +91,11 @@ public class SubBundlePOJO {
         this.criteriasFields = criteriasFields;
     }
 
-    public List<List<CriteriaObjectPOJO>> getCriteriaObjectList() {
+    public List<List<Criteria_Object>> getCriteriaObjectList() {
         return criteriaObjectList;
     }
 
-    public void setCriteriaObjectList(List<List<CriteriaObjectPOJO>> criteriaObjectList) {
+    public void setCriteriaObjectList(List<List<Criteria_Object>> criteriaObjectList) {
         this.criteriaObjectList = criteriaObjectList;
     }
 
@@ -113,11 +115,11 @@ public class SubBundlePOJO {
         this.recommendationFields = recommendationFields;
     }
 
-    public List<List<RecommendationObjectPOJO>> getRecommendationObjectList() {
+    public List<List<Recommendation_Object>> getRecommendationObjectList() {
         return recommendationObjectList;
     }
 
-    public void setRecommendationObjectList(List<List<RecommendationObjectPOJO>> recommendationObjectList) {
+    public void setRecommendationObjectList(List<List<Recommendation_Object>> recommendationObjectList) {
         this.recommendationObjectList = recommendationObjectList;
     }
 }
