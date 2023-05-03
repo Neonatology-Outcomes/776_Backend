@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Class that defines service operations for the saveBundle and getBundle endpoints.  
  */
+
 @Service
 @Transactional
 public class RulesService {
@@ -221,6 +222,7 @@ public class RulesService {
         return recomend_objectList;
     }
   
+    
     public List<NurseTasks> getNurseTasks() {		
 		List<NurseTasks> returnList = new ArrayList<>();
 		try {
