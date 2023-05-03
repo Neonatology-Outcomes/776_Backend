@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 
 /**
  * Entity class for the recommendation_object table of the quality schema from the neonatal database
@@ -53,8 +54,23 @@ public class Recommendation_Object {
 
     @Column(name = "repeat_unit")
     private String repeat_unit;
+    
+	private Timestamp creationtime;
+	
+    private Timestamp modificationtime; 
+    
+    @Transient
+    Boolean checkFlag;
 
-    public Recommendation_Object(long recommendation_bundle_id, String category_name, String field_name, String type, float from_value, String time) {
+    public Boolean getCheckFlag() {
+		return checkFlag;
+	}
+
+	public void setCheckFlag(Boolean checkFlag) {
+		this.checkFlag = checkFlag;
+	}
+
+	public Recommendation_Object(long recommendation_bundle_id, String category_name, String field_name, String type, Float from_value, String time) {
         this.recommendation_bundle_id = recommendation_bundle_id;
         this.category_name = category_name;
         this.field_name = field_name;
@@ -154,7 +170,22 @@ public class Recommendation_Object {
     public void setBin(String bin) {
         this.bin = bin;
     }
+    public Timestamp getCreationtime() {
+		return creationtime;
+	}
 
+	public void setCreationtime(Timestamp creationtime) {
+		this.creationtime = creationtime;
+	}
+
+	public Timestamp getModificationtime() {
+		return modificationtime;
+	}
+
+	public void setModificationtime(Timestamp modificationtime) {
+		this.modificationtime = modificationtime;
+	}
+	
     public Integer getRepeat_time() {
         return repeat_time;
     }
@@ -170,4 +201,6 @@ public class Recommendation_Object {
     public void setRepeat_unit(String repeat_unit) {
         this.repeat_unit = repeat_unit;
     }
+    
+    
 }
