@@ -17,18 +17,6 @@ public class Assessment {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     private long assessment_id;
 
-    /*
-    @Column(name = "creationtime")
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationtime;
-
-    @Column(name = "modificationtime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationtime;
-     */
-
-
     @Column(name = "parent_bundle_id")
     private BigInteger parent_bundle_id;
 
