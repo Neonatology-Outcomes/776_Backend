@@ -39,9 +39,21 @@ public class RegistrationController {
    // Show Register page.
    @CrossOrigin(origins = "*")
    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-   public String viewRegister(@RequestBody User user) {
+   public void viewRegister(@RequestBody User user) {
 	   String jwtToken;
 	   
+	   if (userRepository.getUsernameByUsername(user.getUsername()) != null)
+	   {
+		   if (userRepository.getEmailByUsername(user.getUsername()) != null)
+		   {
+		   jwtToken = "Email already exists";
+		   withResponseEntityReg(jwtToken);
+		   }
+		   jwtToken = "Username already exists";
+		   withResponseEntityReg(jwtToken);
+	   }
+	   else
+	   {
 	   jwtToken = jwtUtils.encodeJwt(user.getUsername());
 	   
 	   System.out.println("Adding User to Database Neonatal");
@@ -49,7 +61,19 @@ public class RegistrationController {
 			   user.getEmailaddress(), user.getFirstname(), user.getLastname(), user.getRoleid()));
 	   long UserId = user.getId();
        System.out.println("User ID: " + UserId);
-	   return jwtToken;
+       
+       returnTokenReg(jwtToken);
+	   }
+   }
+   
+   @GetMapping("/response_entity_reg")
+   public ResponseEntity<String> withResponseEntityReg(String exception_reason) {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(exception_reason);   
+   }   
+   
+   @GetMapping("/return_token_reg")
+   public String returnTokenReg(String token_value) {
+        return token_value;   
    }
     
 
