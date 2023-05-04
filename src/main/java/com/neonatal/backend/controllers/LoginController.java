@@ -35,62 +35,49 @@ public class LoginController {
     String jwtToken;
     
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void loginProcess(@RequestBody User user)
+    public ResponseEntity<String> loginProcess(@RequestBody User user)
     {  
     	String DB_username = userRepository.getUsernameByUsername(user.getUsername());
     	String DB_password = userRepository.getPasswordByUsername(user.getUsername());
-    	//System.out.println(DB_username + DB_password);
-
+    	
       if (DB_username != null)   
       {
     	  String Arg_Password = user.getPassword();
     	  
     	  if(DB_password.matches(Arg_Password))
     	  {
-    		  System.out.println("Inside Password");
         	  jwtToken = jwtUtils.encodeJwt(user.getUsername());
-        	  returnTokenLogin(jwtToken);
+        	  return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     	  }
     	  else
     	  {
     		  jwtToken = "Wrong Password Entered";
-    		  withResponseEntityLogin(jwtToken);
+    		  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
     	  }
 
       }
       else 
       {
     	  jwtToken = "User does not exist";
-    	  withResponseEntityLogin(jwtToken);
+    	  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
       }
     }
     
-    @GetMapping("/response_entity_login")
-    public ResponseEntity<String> withResponseEntityLogin(String exception_reason) {
-         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(exception_reason);   
-    }   
-    
-    @GetMapping("/return_token_login")
-    public String returnTokenLogin(String token_value) {
-         return token_value;   
-    }
-    
     @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
-    public void forgetpassword(@RequestBody User user)
+    public ResponseEntity<String> forgetpassword(@RequestBody User user)
     {  
     	String DB_password = userRepository.getPasswordByEmail(user.getEmailaddress());
 
       if (DB_password != null)   
       {
-    		  System.out.println("Inside Password");
         	  jwtToken = DB_password;
-        	  returnTokenLogin(jwtToken);
+        	  return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
 
       }
       else 
       {
     	  jwtToken = "User does not exist";
-    	  withResponseEntityLogin(jwtToken);
+    	  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
       }
     }
 
