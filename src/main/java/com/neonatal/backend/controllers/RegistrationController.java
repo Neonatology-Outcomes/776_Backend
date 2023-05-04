@@ -37,6 +37,7 @@ public class RegistrationController {
      */
     
    // Show Register page.
+   @CrossOrigin(origins = "*")
    @RequestMapping(value = "/signup", method = RequestMethod.POST)
    public String viewRegister(@RequestBody User user) {
 	   String jwtToken;
