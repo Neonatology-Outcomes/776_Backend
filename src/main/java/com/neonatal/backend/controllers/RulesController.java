@@ -105,6 +105,7 @@ public class RulesController {
 
     }
     
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/getNurseDailyTasks/", method = RequestMethod.GET)
 	public List<NurseTasks> getNurseTasks() {
 		List<NurseTasks> nurseTasksList = null;
