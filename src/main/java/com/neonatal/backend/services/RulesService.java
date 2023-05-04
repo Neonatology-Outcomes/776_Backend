@@ -6,13 +6,19 @@ import com.neonatal.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class that defines service operations for the saveBundle and getBundle endpoints.  
  */
-
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+@RequestMapping("api")
 @Service
 @Transactional
 public class RulesService {
