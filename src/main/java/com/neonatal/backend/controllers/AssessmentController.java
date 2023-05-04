@@ -21,7 +21,7 @@ public class AssessmentController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @RequestMapping(value= "/saveAssessment/" , method= RequestMethod.POST)
+    @RequestMapping(value= "/saveAssessment")
     @PostMapping
     public ResponseEntity<String> saveAssessment(@RequestBody Assessment assessment,
                                                  @RequestHeader("Authorization") String authorization){
@@ -42,7 +42,25 @@ public class AssessmentController {
         }
     }
 
-
+    @RequestMapping(value= "/getCompliance")
+    @GetMapping
+    public ResponseEntity<?> getCompliance(@RequestHeader("Authorization") String authorization){
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(assessmentService.getCompliance(), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(assessmentService.getCompliance(), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 

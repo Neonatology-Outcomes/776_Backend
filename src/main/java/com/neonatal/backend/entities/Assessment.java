@@ -23,7 +23,13 @@ public class Assessment {
     @Column(name = "sub_bundle_id")
     private BigInteger sub_bundle_id;
 
-    @Column(name = "uhid")
+    @Column(name = "recommendation_bundle_id")
+    private BigInteger recommendation_bundle_id;
+    
+    @Column(name = "criteria_bundles_id")
+    private BigInteger criteria_bundles_id;
+
+	@Column(name = "uhid")
     private String uhid;
 
     @Column(name = "field_name")
@@ -34,13 +40,15 @@ public class Assessment {
     private Date entrytimestamp;
 
     public Assessment(long assessment_id, BigInteger parent_bundle_id, BigInteger sub_bundle_id,
-                      String uhid, String field_name, Date entrytimestamp) {
+                      String uhid, String field_name, Date entrytimestamp, BigInteger recommendation_bundle_id, BigInteger criteria_bundles_id) {
         this.assessment_id = assessment_id;
         this.parent_bundle_id = parent_bundle_id;
         this.sub_bundle_id = sub_bundle_id;
         this.uhid = uhid;
         this.field_name = field_name;
         this.entrytimestamp = entrytimestamp;
+        this.recommendation_bundle_id = recommendation_bundle_id;
+        this.criteria_bundles_id = criteria_bundles_id;
     }
 
     public Assessment() {
@@ -70,7 +78,23 @@ public class Assessment {
     public void setSub_bundle_id(BigInteger sub_bundle_id) {
         this.sub_bundle_id = sub_bundle_id;
     }
+    
+    public BigInteger getRecommendation_bundle_id() {
+		return recommendation_bundle_id;
+	}
 
+	public void setRecommendation_bundle_id(BigInteger recommendation_bundle_id) {
+		this.recommendation_bundle_id = recommendation_bundle_id;
+	}
+
+	public BigInteger getCriteria_bundles_id() {
+		return criteria_bundles_id;
+	}
+
+	public void setCriteria_bundles_id(BigInteger criteria_bundles_id) {
+		this.criteria_bundles_id = criteria_bundles_id;
+	}
+	
     public String getUhid() {
         return uhid;
     }

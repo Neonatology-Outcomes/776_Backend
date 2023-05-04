@@ -1,9 +1,11 @@
 package com.neonatal.backend.repositories;
 
 import com.neonatal.backend.entities.Assessment;
+import com.neonatal.backend.entities.Criteria_Bundles;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -12,7 +14,15 @@ import java.util.List;
  */
 @Repository
 public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
-    @Query(value = "SELECT * FROM quality.assessment WHERE assessment_id = :id", nativeQuery = true)
-    public List<Assessment> getByAssessment_id(Long id);
+
+    @Query(value = "SELECT * FROM quality.assessment WHERE sub_bundle_id = :id", nativeQuery = true)
+    public List<Criteria_Bundles> getBySub_bundle_id (Long id);
+
+    @Query(value = "SELECT DISTINCT uhid FROM quality.assessment ORDER BY uhid ASC", nativeQuery = true)
+    public List<String> getUniqueUhid();
+
+    @Query(value = "SELECT * FROM quality.assessment WHERE uhid = :uhid", nativeQuery = true)
+    public List<Assessment> getByUhid(String uhid);
+
 
 }
