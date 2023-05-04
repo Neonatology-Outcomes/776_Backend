@@ -20,7 +20,7 @@ public class AssessmentController {
     private AssessmentService assessmentService;
     @Autowired
     private JwtUtils jwtUtils;
-
+    @CrossOrigin(origins = "*")
     @RequestMapping(value= "/saveAssessment")
     @PostMapping
     public ResponseEntity<String> saveAssessment(@RequestBody Assessment assessment,
@@ -41,7 +41,7 @@ public class AssessmentController {
             return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
         }
     }
-
+    @CrossOrigin(origins = "*")
     @RequestMapping(value= "/getCompliance")
     @GetMapping
     public ResponseEntity<?> getCompliance(@RequestHeader("Authorization") String authorization){

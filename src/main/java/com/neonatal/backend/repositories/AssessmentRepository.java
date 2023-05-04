@@ -15,9 +15,6 @@ import java.util.List;
 @Repository
 public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
 
-    @Query(value = "SELECT * FROM quality.assessment WHERE sub_bundle_id = :id", nativeQuery = true)
-    public List<Criteria_Bundles> getBySub_bundle_id (Long id);
-
     @Query(value = "SELECT DISTINCT uhid FROM quality.assessment ORDER BY uhid ASC", nativeQuery = true)
     public List<String> getUniqueUhid();
 

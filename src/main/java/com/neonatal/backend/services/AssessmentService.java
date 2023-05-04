@@ -19,6 +19,7 @@ public class AssessmentService {
     /**
      * Saves an assessment json that matches the entity structure
      *
+     * @param assessment an Assessment json/object which is sent in a POST request
      * @return "success"
      */
     public String saveAssessment(Assessment assessment){
@@ -31,25 +32,22 @@ public class AssessmentService {
         return "success";
     }
 
+    /**
+     * Gets the compliance totals based on unique uhid. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket)
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
     public List<CompliancePOJO> getCompliance(){
-        List<CompliancePOJO> calculatedCompliance = new ArrayList<>();
+        List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
         try{
             List<String> uhids = assessmentRepository.getUniqueUhid();
-            System.out.println(uhids);
-            for(String uhid: uhids){
-                System.out.println(uhid);
-
+            for(String uhid: uhids){ // for each unique uhid
                 CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
-//                compliance.setUhid(uhid);
-
                 List<Assessment> assessments = assessmentRepository.getByUhid(uhid);
-                System.out.println(assessments);
 
-                // Index in List<AssessmentPOJO>, count
+                // Index in List<AssessmentPOJO>, count>
                 HashMap<String, Integer> hm = new HashMap<>();
 
-//                int index = 0;
-                for(Assessment a : assessments){
+                for(Assessment a : assessments){ // for each assessment
                     String fieldName = a.getField_name();
 
                     if(hm.containsKey(fieldName)){
@@ -68,8 +66,6 @@ public class AssessmentService {
             ex.printStackTrace();
         }
         return calculatedCompliance;
-//        return List<CompliancePOJOs>
-//        return "success";
     }
 
 }
