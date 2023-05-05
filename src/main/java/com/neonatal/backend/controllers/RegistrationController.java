@@ -42,17 +42,28 @@ public class RegistrationController {
    public ResponseEntity<String> viewRegister(@RequestBody User user) {
 	   String jwtToken;
 	   
-	   if (userRepository.getUsernameByUsername(user.getUsername()) != null)
+	   String DB_username = userRepository.getUsernameByUsername(user.getUsername());
+	   String DB_email = userRepository.getEmailByEmail(user.getEmailaddress()) ;
+	   
+	   //System.out.println(DB_username + DB_email);
+	   
+	   if( (DB_username != null) && (DB_email != null) )
+  
 	   {
-		   if (userRepository.getEmailByUsername(user.getUsername()) != null)
-		   {
-		   jwtToken = "Email already exists";
-		   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
-		   }
-		   jwtToken = "Username already exists";
+		   jwtToken = "Username and email address already exists";
 		   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
 	   }
-	   else
+	   else if( (DB_username != null) && (DB_email == null) )
+		   {
+			   jwtToken = "Username already exists";
+			   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+		   }
+	   else if( (DB_username == null) && (DB_email != null) )
+	   {
+		   jwtToken = "Email address already exists";
+		   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+	   }
+	   else if( (DB_username == null) && (DB_email == null) )
 	   {
 	   jwtToken = jwtUtils.encodeJwt(user.getUsername());
 	   
@@ -64,6 +75,7 @@ public class RegistrationController {
        
        return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
 	   }
+	   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("I don't know the error");
    }
     
 

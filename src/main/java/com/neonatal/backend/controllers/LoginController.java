@@ -1,6 +1,7 @@
 package com.neonatal.backend.controllers;
 
 import com.neonatal.backend.entities.User;
+import com.neonatal.backend.models.LoginObjectPOJO;
 import com.neonatal.backend.repositories.UserRepository;
 import com.neonatal.backend.services.JwtUtils;
 
@@ -34,11 +35,15 @@ public class LoginController {
     
     String jwtToken;
     
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> loginProcess(@RequestBody User user)
+    public ResponseEntity<LoginObjectPOJO> loginProcess(@RequestBody User user)
     {  
     	String DB_username = userRepository.getUsernameByUsername(user.getUsername());
     	String DB_password = userRepository.getPasswordByUsername(user.getUsername());
+    	String DB_roleid = userRepository.getRoleidByUsername(user.getUsername());
+    	
+    	LoginObjectPOJO l_obj;
     	
       if (DB_username != null)   
       {
@@ -47,22 +52,26 @@ public class LoginController {
     	  if(DB_password.matches(Arg_Password))
     	  {
         	  jwtToken = jwtUtils.encodeJwt(user.getUsername());
-        	  return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
+        	  l_obj = new LoginObjectPOJO(jwtToken, DB_roleid);
+        	  return ResponseEntity.status(HttpStatus.OK).body(l_obj);
     	  }
     	  else
     	  {
     		  jwtToken = "Wrong Password Entered";
-    		  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+    		  l_obj = new LoginObjectPOJO(jwtToken, null);
+    		  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(l_obj);
     	  }
 
       }
       else 
       {
     	  jwtToken = "User does not exist";
-    	  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+    	  l_obj = new LoginObjectPOJO(jwtToken, null);
+    	  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(l_obj);
       }
     }
     
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
     public ResponseEntity<String> forgetpassword(@RequestBody User user)
     {  
