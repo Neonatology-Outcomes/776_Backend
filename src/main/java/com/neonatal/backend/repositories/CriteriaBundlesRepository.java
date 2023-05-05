@@ -18,4 +18,9 @@ public interface CriteriaBundlesRepository extends JpaRepository<Criteria_Bundle
     @Query(value = "SELECT * FROM quality.criteria_bundles WHERE sub_bundle_id = :id", nativeQuery = true)
     public List<Criteria_Bundles> getBySub_bundle_id (Long id);
 
+    @Query(value = "SELECT criteria_bundles_id FROM quality.criteria_bundles WHERE sub_bundle_id = :sub AND parent_bundle_id = :parent", nativeQuery = true)
+    public List<Long> getBySubParent (Long parent, Long sub);
+
+
+
 }

@@ -15,7 +15,10 @@ import java.util.List;
 public class AssessmentService {
     @Autowired
     private AssessmentRepository assessmentRepository;
-
+    @Autowired
+    private CriteriaBundlesRepository criteriaBundleRepository;
+    @Autowired
+    private CriteriaObjectRepository criteriaObjectRepository;
     /**
      * Saves an assessment json that matches the entity structure
      *
@@ -67,5 +70,95 @@ public class AssessmentService {
         }
         return calculatedCompliance;
     }
+
+    /**
+     * Converts the criteria to a format acceptable by SQL WHERE clause
+     * @param criteria Criteria Object
+     * @return string version of criteria for a SQL WHERE clause
+     */
+    private String criteriaToString(Criteria_Object criteria){
+        StringBuilder sb = new StringBuilder("");
+        String type = criteria.getType();
+        if(type == null){
+            return sb.toString();
+        } else if(type.equalsIgnoreCase("Range")){
+            sb.append(criteria.getField_name());
+            sb.append(" < ");
+            sb.append(criteria.getTo_value());
+            sb.append(" AND ");
+            sb.append(criteria.getFrom_value());
+        } else {
+            sb.append(criteria.getField_name());
+            if(type.equalsIgnoreCase("Greater than")){
+                sb.append(" > ");
+            } else if(type.equalsIgnoreCase("Less than")){
+                sb.append(" < ");
+            } else if(type.equalsIgnoreCase("Greater than or equal")){
+                sb.append(" >= ");
+            } else if(type.equalsIgnoreCase("Less than or equal")){
+                sb.append(" <= ");
+            } else if(type.equalsIgnoreCase("Equals")){
+                sb.append(" = ");
+            }
+            sb.append(criteria.getFrom_value());
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * Gets the recommendations for 1 uhid (baby)
+     * @param babyDetails the birth details of the baby
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
+    public List<String> getRecommendation(RecoInputPOJO babyDetails){
+
+//        given sub_bundle_id, parent_bundle_id, uhid
+        List<String> output = new ArrayList<>();
+        try {
+            List<Long> criteriaBundleIds = criteriaBundleRepository.getBySubParent(babyDetails.getParent_bundle_id(), babyDetails.getSub_bundle_id());
+//        List<Criteria_Bundles> sub = criteriaBundleRepository.getBySub_bundle_id(babyDetails.getSub_bundle_id());
+
+            StringBuilder whereClause = new StringBuilder();
+//        for each criteria bundle id:
+            for (long criteriaBundleId : criteriaBundleIds) {
+                List<Criteria_Object> criteriaObjects = criteriaObjectRepository.getByCriteria_bundles_id(criteriaBundleId);
+
+                whereClause.append(criteriaToString(criteriaObjects.get(0)));
+                for(int i = 1; i < criteriaObjects.size(); i++){
+                    whereClause.append(" AND ");
+                    whereClause.append(criteriaToString(criteriaObjects.get(i)));
+                }
+            }
+
+            whereClause.append(" AND ");
+            whereClause.append("uhid = " + babyDetails.getUhid());
+
+
+//        get the criteria from 1 rule
+
+//        parse into a format to compare with uhid details (SELECT * FROM birth_details WHERE gestation <= 32 AND uhid = givenUhid)
+//
+//                ** How to know which table to query? (take the info from the criteria and search the table headers for it, then query?)
+//        if true:
+
+//        Check if there are any assessments for this recommendation?
+//
+//            ** If so how should be return only the correct recommendation? based on day, overall, etc **
+//        if not all the assessments have been done
+//
+//          compile corresponding recommendations using criteria_bundle_id
+//          add recommendations to list
+//   return the list of recommendations
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return output;
+    }
+
+
 
 }
