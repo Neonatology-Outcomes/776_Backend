@@ -30,6 +30,7 @@ public class RulesController {
      * for: Rule Name, Condition, Action
      * @return an ArrayList of RUleOBjectPOJO that represents the JSON.
      */
+    @CrossOrigin(origins = "*")
     @RequestMapping("/getBundles")
     @GetMapping
     public ResponseEntity<?> getBundle(@RequestHeader("Authorization") String authorization){
@@ -56,7 +57,8 @@ public class RulesController {
      * @param parentBundle ParentBundlePOJO object representing the JSON that is passed
      * @return A string "success" if successful // TODO: Change this?
      */
-    @RequestMapping(value= "/saveBundle/" , method= RequestMethod.POST)
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value= "/saveBundle" , method= RequestMethod.POST)
     @PostMapping
     public ResponseEntity<String> saveBundle(@RequestBody ParentBundlePOJO parentBundle,
                                              @RequestHeader("Authorization") String authorization){
@@ -77,6 +79,7 @@ public class RulesController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping("/getJWT")
     @GetMapping
     public ResponseEntity<String> getJWT() {
@@ -84,6 +87,7 @@ public class RulesController {
         return new ResponseEntity<>(jwtUtils.encodeJwt("brandt"), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping("/checkJWT")
     @GetMapping
     public ResponseEntity<?> checkJWT(@RequestHeader("Authorization") String authorization) {

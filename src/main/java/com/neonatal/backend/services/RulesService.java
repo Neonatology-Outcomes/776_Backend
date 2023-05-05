@@ -202,7 +202,8 @@ public class RulesService {
         List<Criteria_Object> criteria_objectList = new ArrayList<>();
         for (Criteria_Object criteriaObject: criteriaObjects){
             Criteria_Object entityObject = new Criteria_Object(bundleID, criteriaObject.getField_name(),
-                    criteriaObject.getType(), criteriaObject.getFrom_value(), criteriaObject.getTime());
+                    criteriaObject.getType(), criteriaObject.getFrom_value(), criteriaObject.getTo_value(),
+                    criteriaObject.getOr_condition(), criteriaObject.getTime());
             criteria_objectList.add(entityObject);
         }
         return criteria_objectList;
@@ -222,7 +223,7 @@ public class RulesService {
         for (Recommendation_Object recomendObject: recomendObjects){
             Recommendation_Object entityObject = new Recommendation_Object(bundleID, recomendObject.getCategory_name(),
                     recomendObject.getField_name(), recomendObject.getType(), recomendObject.getFrom_value(),
-                    recomendObject.getTime());
+                    recomendObject.getTo_value(), recomendObject.getOr_condition(), recomendObject.getTime());
             recomend_objectList.add(entityObject);
         }
         return recomend_objectList;

@@ -70,12 +70,16 @@ public class Recommendation_Object {
 		this.checkFlag = checkFlag;
 	}
 
-	public Recommendation_Object(long recommendation_bundle_id, String category_name, String field_name, String type, Float from_value, String time) {
+	public Recommendation_Object(long recommendation_bundle_id, String category_name, String field_name, String type,
+                                 Float from_value, Float to_value, String or_condition, String time) {
         this.recommendation_bundle_id = recommendation_bundle_id;
         this.category_name = category_name;
         this.field_name = field_name;
         this.type = type;
         this.from_value = from_value;
+        this.to_value = to_value;
+        this.from_value = from_value;
+        this.or_condition = or_condition;
         this.time = time;
     }
 
