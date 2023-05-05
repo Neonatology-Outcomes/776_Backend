@@ -23,8 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT password FROM quality.user WHERE username = :username", nativeQuery = true)
     public String getPasswordByUsername (String username);
     
-    @Query(value = "SELECT emailaddress FROM quality.user WHERE username = :username", nativeQuery = true)
-    public String getEmailByUsername (String username);
+    @Query(value = "SELECT emailaddress FROM quality.user WHERE emailaddress = :emailaddress", nativeQuery = true)
+    public String getEmailByEmail (String emailaddress);
     
     @Query(value = "SELECT password FROM quality.user WHERE emailaddress = :emailaddress", nativeQuery = true)
     public String getPasswordByEmail (String emailaddress);
