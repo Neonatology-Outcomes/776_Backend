@@ -64,11 +64,14 @@ public class Criteria_Object {
 
 
 
-    public Criteria_Object(long criteria_bundles_id, String field_name, String type, Float from_value, String time) {
+    public Criteria_Object(long criteria_bundles_id, String field_name, String type, Float from_value, float to_value,
+                           String or_condition, String time) {
         this.criteria_bundles_id = criteria_bundles_id;
         this.field_name = field_name;
         this.type = type;
         this.from_value = from_value;
+        this.to_value = to_value;
+        this.or_condition = or_condition;
         this.time = time;
     }
 
@@ -121,7 +124,7 @@ public class Criteria_Object {
     }
 
     public float getTo_value() {
-        return to_value;
+        return this.to_value;
     }
 
     public void setTo_value(float to_value) {
@@ -160,13 +163,6 @@ public class Criteria_Object {
         this.vent = vent;
     }
 
-    public String getOr_condition() {
-        return or_condition;
-    }
-
-    public void setOr_condition(String or_condition) {
-        this.or_condition = or_condition;
-    }
     public Timestamp getCreationtime() {
 		return creationtime;
 	}
@@ -183,7 +179,15 @@ public class Criteria_Object {
 		this.modificationtime = modificationtime;
 	}
 
-	public void setFrom_value(Float from_value) {
+    public String getOr_condition() {
+        return this.or_condition;
+    }
+
+    public void setOr_condition(String or_condition) {
+        this.or_condition = or_condition;
+    }
+
+    public void setFrom_value(Float from_value) {
 		this.from_value = from_value;
 	}
 
