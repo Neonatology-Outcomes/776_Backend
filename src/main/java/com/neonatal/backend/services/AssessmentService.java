@@ -80,6 +80,7 @@ public class AssessmentService {
         StringBuilder sb = new StringBuilder("");
         String type = criteria.getType();
         if(type == null){
+            sb.append("Boolean");
             return sb.toString();
         } else if(type.equalsIgnoreCase("Range")){
             sb.append(criteria.getField_name());
@@ -99,6 +100,8 @@ public class AssessmentService {
                 sb.append(" <= ");
             } else if(type.equalsIgnoreCase("Equals")){
                 sb.append(" = ");
+            } else if(type.equalsIgnoreCase("Not equals")){
+                sb.append(" != ");
             }
             sb.append(criteria.getFrom_value());
         }
@@ -133,6 +136,7 @@ public class AssessmentService {
 
             whereClause.append(" AND ");
             whereClause.append("uhid = " + babyDetails.getUhid());
+
 
 
 //        get the criteria from 1 rule
