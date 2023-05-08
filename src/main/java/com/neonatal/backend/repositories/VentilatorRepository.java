@@ -1,21 +1,20 @@
 package com.neonatal.backend.repositories;
 
-import com.neonatal.backend.entities.Ventilator;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.neonatal.backend.entities.Ventilator;
 
-/**
- * This interface functions as the class for CRUD operations
- * on the Ventilator table with ID type of long.
- */
 @Repository
-public interface VentilatorRepository extends JpaRepository<Ventilator, Long>{
-    @Query(value = "SELECT * FROM quality.ventilator WHERE ventilator_id = :id", nativeQuery = true)
-    public List<Ventilator> getByVentilator_id (Long id);
+public interface VentilatorRepository extends JpaRepository<Ventilator, Long> {
 
+    // Query the database to retrieve the roleid of the passed username
     @Query(value = "SELECT * FROM quality.ventilator WHERE uhid = :uhid", nativeQuery = true)
-    public List<Ventilator> getVentilatorByUHID (String uhid);
+    public List<Ventilator> getVentilatorByUhid (String uhid);
+    
+    @Query(value = "SELECT * FROM quality.ventilator WHERE uhid = :uhid and vent_mode = :vent", nativeQuery = true)
+    public List<Ventilator> getVentilatorByUhidAndMode (String uhid, String vent);
 }

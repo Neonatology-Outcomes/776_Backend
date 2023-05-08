@@ -6,13 +6,19 @@ import com.neonatal.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class that defines service operations for the saveBundle and getBundle endpoints.  
  */
-
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+@RequestMapping("api")
 @Service
 @Transactional
 public class RulesService {
@@ -31,7 +37,10 @@ public class RulesService {
     private ParentBundleRepository parentBundleRepository;
     @Autowired 
     private BirthDetailsRepository birthDetailsRepository;
-
+    @Autowired 
+    private VentilatorRepository ventilatorRepository;
+    @Autowired 
+    private ProcedureRepository procedureRepository;
     /**
      * Gets the list of all Rule Names and their associated Conditions and Actions and returns them
      * for the GET endpoint /getBundles
@@ -196,7 +205,8 @@ public class RulesService {
         List<Criteria_Object> criteria_objectList = new ArrayList<>();
         for (Criteria_Object criteriaObject: criteriaObjects){
             Criteria_Object entityObject = new Criteria_Object(bundleID, criteriaObject.getField_name(),
-                    criteriaObject.getType(), criteriaObject.getFrom_value(), criteriaObject.getTime());
+                    criteriaObject.getType(), criteriaObject.getFrom_value(), criteriaObject.getTo_value(),
+                    criteriaObject.getOr_condition(), criteriaObject.getTime());
             criteria_objectList.add(entityObject);
         }
         return criteria_objectList;
@@ -216,7 +226,7 @@ public class RulesService {
         for (Recommendation_Object recomendObject: recomendObjects){
             Recommendation_Object entityObject = new Recommendation_Object(bundleID, recomendObject.getCategory_name(),
                     recomendObject.getField_name(), recomendObject.getType(), recomendObject.getFrom_value(),
-                    recomendObject.getTime());
+                    recomendObject.getTo_value(), recomendObject.getOr_condition(), recomendObject.getTime());
             recomend_objectList.add(entityObject);
         }
         return recomend_objectList;
@@ -254,12 +264,116 @@ public class RulesService {
 				
 			}
 			for (Birth_Details babyObj : babyList) {
-				NurseTasks nurseObj = new NurseTasks();
-				nurseObj.setUhid(babyObj.getUhid());
-				nurseObj.setBirth_weight(babyObj.getBirth_weight());
-				nurseObj.setDateofbirth(babyObj.getDateofbirth());
-				nurseObj.setTasks(recommendationStr);
-				returnList.add(nurseObj);
+				boolean crieriaActive = true;
+				List<Criteria_Object> criteriaObjectList = criteriaObjectRepository.getByCriteria_bundles();
+				for (Criteria_Object criteriaobj : criteriaObjectList) {
+					if (!crieriaActive) {
+						break;
+					}
+					
+					if (criteriaobj.getField_name().equalsIgnoreCase("Birth Weight")) {
+						if ((criteriaobj.getFrom_value() > 0)) {
+							if ((criteriaobj.getType() == null)
+									|| (criteriaobj.getType().equalsIgnoreCase("Equals to"))) {
+								if (babyObj.getBirth_weight() != Math.round(criteriaobj.getFrom_value())) {
+									crieriaActive = false;
+									continue;
+								}
+							} else if ((criteriaobj.getType().equalsIgnoreCase("Greater than"))) {
+								if (babyObj.getBirth_weight() < criteriaobj.getFrom_value()) {
+									crieriaActive = false;
+									continue;
+								}
+							} else if ((criteriaobj.getType().equalsIgnoreCase("Less than"))) {
+								if (babyObj.getBirth_weight() > criteriaobj.getFrom_value()) {
+									crieriaActive = false;
+									continue;
+								}
+							}
+
+							else if ((criteriaobj.getType().equalsIgnoreCase("Range"))
+									&& (criteriaobj.getTo_value() > 0)) {
+								if (babyObj.getBirth_weight() < criteriaobj.getFrom_value()
+										|| babyObj.getBirth_weight() > criteriaobj.getTo_value()) {
+									crieriaActive = false;
+									continue;
+								}
+							} else if ((criteriaobj.getType().equalsIgnoreCase("Range"))
+									&& (criteriaobj.getTo_value() == null)) {
+								crieriaActive = false;
+								continue;
+							}
+						}
+					}
+					// Gestation
+					else if (criteriaobj.getField_name().equalsIgnoreCase("Gestation")) {
+						if ((criteriaobj.getFrom_value() > 0)) {
+							if ((criteriaobj.getType() == null)
+									|| (criteriaobj.getType().equalsIgnoreCase("Single"))) {
+								if (babyObj.getBirth_gestation_week() != Math.round(criteriaobj.getFrom_value())) {
+									crieriaActive = false;
+									continue;
+								}
+							} else if ((criteriaobj.getType().equalsIgnoreCase("Greater than"))) {
+								if (babyObj.getBirth_gestation_week() < criteriaobj.getFrom_value()) {
+									crieriaActive = false;
+									continue;
+								}
+							} else if ((criteriaobj.getType().equalsIgnoreCase("Less than"))) {
+								if (babyObj.getBirth_gestation_week() > criteriaobj.getFrom_value()) {
+									crieriaActive = false;
+									continue;
+								}
+							}
+
+							else if ((criteriaobj.getType().equalsIgnoreCase("Range"))
+									&& (criteriaobj.getTo_value() > 0)) {
+								if (babyObj.getBirth_gestation_week() < criteriaobj.getFrom_value()
+										|| babyObj.getBirth_gestation_week() > criteriaobj.getTo_value()) {
+									crieriaActive = false;
+									continue;
+								}
+							} else if ((criteriaobj.getType().equalsIgnoreCase("Range"))
+									&& (criteriaobj.getTo_value() == null)) {
+								crieriaActive = false;
+								continue;
+							}
+						}
+					}
+					if (criteriaobj.getCategory_name().equalsIgnoreCase("Respiratory Support")) {
+						String ventMode = criteriaobj.getVent();
+						if(ventMode != "" && ventMode != null) {
+							List<Ventilator> ventObjectList = ventilatorRepository.getVentilatorByUhidAndMode(babyObj.getUhid(), ventMode);
+							if(ventObjectList.size() > 0) {
+								crieriaActive = false;
+								continue;
+							}
+						}
+						List<Ventilator> ventObjectList = ventilatorRepository.getVentilatorByUhidAndMode(babyObj.getUhid(), "Extubation");
+						if(ventObjectList.size() > 0) {
+							crieriaActive = false;
+							continue;
+						}
+					}
+					if (criteriaobj.getCategory_name().equalsIgnoreCase("Procedure")) {
+						String procedureType = criteriaobj.getField_name();
+						List<Procedure> procedureObjectList = procedureRepository.getPreocedureByUhidAndProcedure(babyObj.getUhid(), procedureType);
+						if(procedureObjectList.size() > 0) {
+							crieriaActive = false;
+							continue;
+						}
+					}
+					
+					
+				}
+				if(crieriaActive) {
+					NurseTasks nurseObj = new NurseTasks();
+					nurseObj.setUhid(babyObj.getUhid());
+					nurseObj.setBirth_weight(babyObj.getBirth_weight());
+					nurseObj.setDateofbirth(babyObj.getDateofbirth());
+					nurseObj.setTasks(recommendationStr);
+					returnList.add(nurseObj);
+				}
 			}
 
 		} catch (Exception ex) {

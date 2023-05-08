@@ -16,4 +16,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Query the database to retrieve the roleid of the passed username
     @Query(value = "SELECT roleid FROM quality.user WHERE username = :username", nativeQuery = true)
     public String getRoleidByUsername (String username);
+    
+    @Query(value = "SELECT username FROM quality.user WHERE username = :username", nativeQuery = true)
+    public String getUsernameByUsername (String username);
+    
+    @Query(value = "SELECT password FROM quality.user WHERE username = :username", nativeQuery = true)
+    public String getPasswordByUsername (String username);
+    
+    @Query(value = "SELECT emailaddress FROM quality.user WHERE emailaddress = :emailaddress", nativeQuery = true)
+    public String getEmailByEmail (String emailaddress);
+    
+    @Query(value = "SELECT password FROM quality.user WHERE emailaddress = :emailaddress", nativeQuery = true)
+    public String getPasswordByEmail (String emailaddress);
 }

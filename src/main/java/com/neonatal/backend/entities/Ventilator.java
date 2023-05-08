@@ -1,60 +1,52 @@
 package com.neonatal.backend.entities;
 
-import jakarta.persistence.*;
-import java.util.Date;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 @Entity
 @SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 @Table(name="ventilator", schema = "quality")
-public class Ventilator {
-    @Id
+public class Ventilator 
+{
+  	@Id
     @Column(name="ventilator_id")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
-    private long ventilator_id;
-
-    @Column(name = "creationtime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationtime;
-
-    @Column(name = "modificationtime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationtime;
-
-    @Column(name = "uhid")
+    private long ventilatorid;
+  
+	@Column(name = "uhid")
     private String uhid;
 
-    @Column(name = "vent_mode")
-    private String vent_mode;
+	@Column(name = "vent_mode")
+	private String ventmode;
 
-    public Ventilator(long ventilator_id, Date creationtime, Date modificationtime, String uhid, String vent_mode){
-        this.ventilator_id = ventilator_id;
-        this.creationtime = creationtime;
-        this.modificationtime = modificationtime;
-        this.uhid = uhid;
-        this.vent_mode = vent_mode;
-    }
+	public long getVentilatorid() {
+		return ventilatorid;
+	}
 
-    public Ventilator(){
-        // Default constructor.
-    }
+	public void setVentilatorid(long ventilatorid) {
+		this.ventilatorid = ventilatorid;
+	}
 
-    public long getVentilator_id() { return ventilator_id; }
+	public String getUhid() {
+		return uhid;
+	}
 
-    public void setVentilator_id(long ventilator_id) { this.ventilator_id = ventilator_id; }
+	public void setUhid(String uhid) {
+		this.uhid = uhid;
+	}
 
-    public Date getCreationtime() { return creationtime; }
+	public String getVentmode() {
+		return ventmode;
+	}
 
-    public void setCreationtime(Date creationtime) { this.creationtime = creationtime; }
+	public void setVentmode(String ventmode) {
+		this.ventmode = ventmode;
+	}
+		
 
-    public Date getModificationtime() { return modificationtime; }
-
-    public void setModificationtime(Date modificationtime) { this.modificationtime = modificationtime; }
-
-    public String getUhid() { return uhid; }
-
-    public void setUhid(String uhid) { this.uhid = uhid; }
-
-    public String getVent_mode() { return vent_mode; }
-
-    public void setVent_mode(String vent_mode) { this.vent_mode = vent_mode; }
 }

@@ -37,10 +37,34 @@ public class RegistrationController {
      */
     
    // Show Register page.
+   @CrossOrigin(origins = "*")
    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-   public String viewRegister(@RequestBody User user) {
+   public ResponseEntity<String> viewRegister(@RequestBody User user) {
 	   String jwtToken;
 	   
+	   String DB_username = userRepository.getUsernameByUsername(user.getUsername());
+	   String DB_email = userRepository.getEmailByEmail(user.getEmailaddress()) ;
+	   
+	   //System.out.println(DB_username + DB_email);
+	   
+	   if( (DB_username != null) && (DB_email != null) )
+  
+	   {
+		   jwtToken = "Username and email address already exists";
+		   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+	   }
+	   else if( (DB_username != null) && (DB_email == null) )
+		   {
+			   jwtToken = "Username already exists";
+			   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+		   }
+	   else if( (DB_username == null) && (DB_email != null) )
+	   {
+		   jwtToken = "Email address already exists";
+		   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(jwtToken);
+	   }
+	   else if( (DB_username == null) && (DB_email == null) )
+	   {
 	   jwtToken = jwtUtils.encodeJwt(user.getUsername());
 	   
 	   System.out.println("Adding User to Database Neonatal");
@@ -48,7 +72,10 @@ public class RegistrationController {
 			   user.getEmailaddress(), user.getFirstname(), user.getLastname(), user.getRoleid()));
 	   long UserId = user.getId();
        System.out.println("User ID: " + UserId);
-	   return jwtToken;
+       
+       return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
+	   }
+	   return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("I don't know the error");
    }
     
 
