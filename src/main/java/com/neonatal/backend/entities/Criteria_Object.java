@@ -123,11 +123,11 @@ public class Criteria_Object {
         return from_value;
     }
 
-    public float getTo_value() {
+    public Float getTo_value() {
         return this.to_value;
     }
 
-    public void setTo_value(float to_value) {
+    public void setTo_value(Float to_value) {
         this.to_value = to_value;
     }
 
@@ -191,9 +191,6 @@ public class Criteria_Object {
 		this.from_value = from_value;
 	}
 
-	public void setTo_value(Float to_value) {
-		this.to_value = to_value;
-	}
     public String getBin() {
         return bin;
     }
