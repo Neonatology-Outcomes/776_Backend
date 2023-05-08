@@ -20,7 +20,7 @@ public class JwtUtils {
     private static final String SECRET_KEY = "neonatal-outcomes";
 
     // JWT expiration time (10 minutes)
-    private static final long JWT_EXPIRATION_TIME = 10 * 60 * 1000;
+    private static final long JWT_EXPIRATION_TIME = 60 * 60 * 1000;
 
     // User Repository
     @Autowired

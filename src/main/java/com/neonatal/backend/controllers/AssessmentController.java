@@ -2,7 +2,9 @@ package com.neonatal.backend.controllers;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.neonatal.backend.entities.Assessment;
+import com.neonatal.backend.entities.Birth_Details;
 import com.neonatal.backend.models.NurseTasks;
+import com.neonatal.backend.models.RecoInputPOJO;
 import com.neonatal.backend.repositories.AssessmentRepository;
 import com.neonatal.backend.repositories.UserRepository;
 import com.neonatal.backend.services.AssessmentService;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class AssessmentController {
 
@@ -20,7 +24,7 @@ public class AssessmentController {
     private AssessmentService assessmentService;
     @Autowired
     private JwtUtils jwtUtils;
-
+    @CrossOrigin(origins = "*")
     @RequestMapping(value= "/saveAssessment")
     @PostMapping
     public ResponseEntity<String> saveAssessment(@RequestBody Assessment assessment,
@@ -41,7 +45,7 @@ public class AssessmentController {
             return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
         }
     }
-
+    @CrossOrigin(origins = "*")
     @RequestMapping(value= "/getCompliance")
     @GetMapping
     public ResponseEntity<?> getCompliance(@RequestHeader("Authorization") String authorization){
@@ -62,7 +66,27 @@ public class AssessmentController {
         }
     }
 
-
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value= "/getRecommendation")
+    @GetMapping
+    public ResponseEntity<?> getRecommendation(@RequestBody RecoInputPOJO babyDetails,
+                                               @RequestHeader("Authorization") String authorization){
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(assessmentService.getRecommendation(babyDetails), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(assessmentService.getRecommendation(babyDetails), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 }
