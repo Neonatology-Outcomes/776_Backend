@@ -33,7 +33,7 @@ public class RegistrationController {
     /**
      * Gets all bundle information and returns them as a JSON array of rows with values
      * for: Rule Name, Condition, Action
-     * @return an ArrayList of RUleOBjectPOJO that represents the JSON.
+     * @return an ArrayList of RUleObjectPOJO that represents the JSON.
      */
     
    // Show Register page.
