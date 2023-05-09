@@ -46,9 +46,9 @@ public class AssessmentController {
         }
     }
     @CrossOrigin(origins = "*")
-    @RequestMapping(value= "/getCompliance")
+    @RequestMapping(value= "/getAllCompliance")
     @GetMapping
-    public ResponseEntity<?> getCompliance(@RequestHeader("Authorization") String authorization){
+    public ResponseEntity<?> getAllCompliance(@RequestHeader("Authorization") String authorization){
         try {
             int roleID = jwtUtils.checkAuthorization(authorization);
             if (roleID == 1){
@@ -65,6 +65,75 @@ public class AssessmentController {
             return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value= "/getComplianceByUhid")
+    @GetMapping
+    public ResponseEntity<?> getComplianceByUhid(@RequestBody Birth_Details birthDetails, @RequestHeader("Authorization") String authorization){
+        try {
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(assessmentService.getComplianceByUhid(birthDetails.getUhid()), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(assessmentService.getComplianceByUhid(birthDetails.getUhid()), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value= "/getComplianceByDate")
+    @GetMapping
+    public ResponseEntity<?> getComplianceByDate(@RequestBody String yearDay, @RequestHeader("Authorization") String authorization){
+
+        try {
+            String[] date = yearDay.split(" ");
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(assessmentService.getComplianceByDate(Integer.parseInt(date[0]), Integer.parseInt(date[1])), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(assessmentService.getComplianceByDate(Integer.parseInt(date[0]), Integer.parseInt(date[1])), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value= "/getComplianceByDateAndUhid")
+    @GetMapping
+    public ResponseEntity<?> getComplianceByDateAndUhid(@RequestBody Birth_Details birthDetails, String yearDay, @RequestHeader("Authorization") String authorization){
+
+        try {
+            String[] date = yearDay.split(" ");
+            int roleID = jwtUtils.checkAuthorization(authorization);
+            if (roleID == 1){
+                // USER IS A NURSE
+                return new ResponseEntity<>(assessmentService.getComplianceByDateAndUhid(birthDetails.getUhid(), Integer.parseInt(date[0]), Integer.parseInt(date[1])), HttpStatus.OK);
+            } else if (roleID == 2) {
+                // USER IS AN ADMIN
+                return new ResponseEntity<>(assessmentService.getComplianceByDateAndUhid(birthDetails.getUhid(), Integer.parseInt(date[0]), Integer.parseInt(date[1])), HttpStatus.OK);
+            } else {
+                // USER DOES NOT EXIST
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (TokenExpiredException tee) {
+            return new ResponseEntity("TOKEN EXPIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value= "/getRecommendation")

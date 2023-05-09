@@ -39,11 +39,13 @@ public class AssessmentService {
      * Gets the compliance totals based on unique uhid. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket)
      * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
      */
-    public List<CompliancePOJO> getCompliance(){
+
+    public List<CompliancePOJO> getCompliance1(){
         List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
         try{
             List<String> uhids = assessmentRepository.getUniqueUhid();
             for(String uhid: uhids){ // for each unique uhid
+                calculatedCompliance.add(getComplianceByUhid(uhid));
                 CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
                 List<Assessment> assessments = assessmentRepository.getByUhid(uhid);
 
@@ -70,6 +72,95 @@ public class AssessmentService {
         }
         return calculatedCompliance;
     }
+
+    /**
+     * Gets the compliance totals based on unique uhid. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket). Uses getComplianceByUhid()
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
+    public List<CompliancePOJO> getCompliance(){
+        List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
+        try{
+            List<String> uhids = assessmentRepository.getUniqueUhid();
+            for(String uhid: uhids){ // for each unique uhid
+                calculatedCompliance.add(getComplianceByUhid(uhid));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return calculatedCompliance;
+    }
+
+    /**
+     * Gets the compliance for the input uhid. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket)
+     * @param uhid uhid for baby you want compliance of
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
+    public CompliancePOJO getComplianceByUhid(String uhid){
+        CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
+        try{
+            List<Assessment> assessments = assessmentRepository.getByUhid(uhid);
+            compliance = compileAssessments(uhid, assessments);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return compliance;
+    }
+
+    public CompliancePOJO compileAssessments(String uhid, List<Assessment> assessments){
+        CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
+        try{
+            HashMap<String, Integer> hm = new HashMap<>();
+
+            for(Assessment a : assessments){ // for each assessment
+                String fieldName = a.getField_name();
+                System.out.println(a.getEntrytimestamp());
+
+                if(hm.containsKey(fieldName)){
+                    hm.put(fieldName, hm.get(fieldName) + 1);
+                } else {
+                    hm.put(fieldName, 1);
+                    compliance.getAssessments().add(new AssessmentPOJO(fieldName, a.getRecommendation_bundle_id(), a.getCriteria_bundles_id()));
+                }
+            }
+            for(AssessmentPOJO ap : compliance.getAssessments()){
+                ap.setOccurrences(hm.get(ap.getFieldName()));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return compliance;
+    }
+
+    public List<CompliancePOJO> getComplianceByDate(int year, int day){
+
+        List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
+        try{
+            List<String> uhids = assessmentRepository.getUhidByDate(year, day);
+            for(String uhid: uhids){ // for each unique uhid
+                CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
+                List<Assessment> assessments = assessmentRepository.getByUhidDate(uhid, year, day);
+
+                calculatedCompliance.add(compileAssessments(uhid, assessments));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return calculatedCompliance;
+    }
+
+    public List<CompliancePOJO> getComplianceByDateAndUhid(String uhid, int year, int day){
+        List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
+        try{
+            CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
+            List<Assessment> assessments = assessmentRepository.getByUhidDate(uhid, year, day);
+            calculatedCompliance.add(compileAssessments(uhid, assessments));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return calculatedCompliance;
+    }
+
 
     /**
      * Converts the criteria to a format acceptable by SQL WHERE clause
@@ -162,7 +253,5 @@ public class AssessmentService {
 
         return output;
     }
-
-
 
 }
