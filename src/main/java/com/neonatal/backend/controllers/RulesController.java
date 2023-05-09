@@ -120,5 +120,16 @@ public class RulesController {
 		}
 		return nurseTasksList;
 	}
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/getDashboard/", method = RequestMethod.GET)
+	public List<NurseTasks> getDashboard() {
+		List<NurseTasks> dashboardList = null;
+		try {
+			dashboardList = rulesService.getDashboard();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dashboardList;
+	}
 
 }
