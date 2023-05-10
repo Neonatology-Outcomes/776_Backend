@@ -40,7 +40,6 @@ public class Assessment {
     
     @Column(name = "criteria_bundles_id")
     private BigInteger criteria_bundles_id;
-    
 
 	@Column(name = "uhid")
     private String uhid;
@@ -53,13 +52,15 @@ public class Assessment {
     private Date entrytimestamp;
 
     public Assessment(long assessment_id, BigInteger parent_bundle_id, BigInteger sub_bundle_id,
-                      String uhid, String field_name, Date entrytimestamp) {
+                      String uhid, String field_name, Date entrytimestamp, BigInteger recommendation_bundle_id, BigInteger criteria_bundles_id) {
         this.assessment_id = assessment_id;
         this.parent_bundle_id = parent_bundle_id;
         this.sub_bundle_id = sub_bundle_id;
         this.uhid = uhid;
         this.field_name = field_name;
         this.entrytimestamp = entrytimestamp;
+        this.recommendation_bundle_id = recommendation_bundle_id;
+        this.criteria_bundles_id = criteria_bundles_id;
     }
 
     public Assessment() {
