@@ -21,10 +21,10 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
     @Query(value = "SELECT * FROM quality.assessment WHERE uhid = :uhid", nativeQuery = true)
     public List<Assessment> getByUhid(String uhid);
 
-    @Query(value = "SELECT * FROM quality.assessment WHERE uhid = :uhid AND EXTRACT(year from entrytimestamp) = :year AND EXTRACT(day from entrytimestamp) = :day", nativeQuery = true)
-    public List<Assessment> getByUhidDate(String uhid, int year, int day);
+    @Query(value = "SELECT * FROM quality.assessment WHERE uhid = :uhid AND EXTRACT(year from entrytimestamp) = :year AND EXTRACT(month from entrytimestamp) = :month AND EXTRACT(day from entrytimestamp) = :day", nativeQuery = true)
+    public List<Assessment> getByUhidDate(String uhid, int year, int month, int day);
 
-    @Query(value = "SELECT uhid FROM quality.assessment WHERE EXTRACT(year from entrytimestamp) = :year AND EXTRACT(day from entrytimestamp) = :day", nativeQuery = true)
-    public List<String> getUhidByDate(int year, int day);
+    @Query(value = "SELECT uhid FROM quality.assessment WHERE EXTRACT(year from entrytimestamp) = :year AND EXTRACT(month from entrytimestamp) = :month AND EXTRACT(day from entrytimestamp) = :day", nativeQuery = true)
+    public List<String> getUhidByDate(int year, int month, int day);
 
 }

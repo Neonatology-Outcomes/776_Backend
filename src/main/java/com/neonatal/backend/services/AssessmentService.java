@@ -77,7 +77,7 @@ public class AssessmentService {
      * Gets the compliance totals based on unique uhid. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket). Uses getComplianceByUhid()
      * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
      */
-    public List<CompliancePOJO> getCompliance(){
+    public List<CompliancePOJO> getAllCompliance(){
         List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
         try{
             List<String> uhids = assessmentRepository.getUniqueUhid();
@@ -100,22 +100,24 @@ public class AssessmentService {
         try{
             List<Assessment> assessments = assessmentRepository.getByUhid(uhid);
             compliance = compileAssessments(uhid, assessments);
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return compliance;
     }
 
+    /**
+     * Compiles the assessments together and counts the number of assessments
+     * @param uhid uhid for baby you want compliance of
+     * @param assessments list of assessments
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
     public CompliancePOJO compileAssessments(String uhid, List<Assessment> assessments){
         CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
         try{
             HashMap<String, Integer> hm = new HashMap<>();
-
             for(Assessment a : assessments){ // for each assessment
                 String fieldName = a.getField_name();
-                System.out.println(a.getEntrytimestamp());
-
                 if(hm.containsKey(fieldName)){
                     hm.put(fieldName, hm.get(fieldName) + 1);
                 } else {
@@ -132,14 +134,19 @@ public class AssessmentService {
         return compliance;
     }
 
-    public List<CompliancePOJO> getComplianceByDate(int year, int day){
-
+    /**
+     * Gets the compliance totals based on the date. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket). Uses getComplianceByUhid()
+     * @param year year for the date to check
+     * @param day day for the date to check
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
+    public List<CompliancePOJO> getComplianceByDate(int year, int month, int day){
         List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
         try{
-            List<String> uhids = assessmentRepository.getUhidByDate(year, day);
+            List<String> uhids = assessmentRepository.getUhidByDate(year, month, day);
             for(String uhid: uhids){ // for each unique uhid
                 CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
-                List<Assessment> assessments = assessmentRepository.getByUhidDate(uhid, year, day);
+                List<Assessment> assessments = assessmentRepository.getByUhidDate(uhid, year, month, day);
 
                 calculatedCompliance.add(compileAssessments(uhid, assessments));
             }
@@ -149,11 +156,18 @@ public class AssessmentService {
         return calculatedCompliance;
     }
 
-    public List<CompliancePOJO> getComplianceByDateAndUhid(String uhid, int year, int day){
+    /**
+     * Gets the compliance totals based on input uhid and date. Assessments are counted in buckets based on the unique assessments (same assessments are in the same bucket). Uses getComplianceByUhid()
+     * @param uhid unique id for baby
+     * @param year year for the date
+     * @param day day for the date
+     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
+     */
+    public List<CompliancePOJO> getComplianceByDateAndUhid(String uhid, int year, int month, int day){
         List<CompliancePOJO> calculatedCompliance = new ArrayList<>(); // stores all the compliancePOJO's
         try{
             CompliancePOJO compliance = new CompliancePOJO(uhid, new ArrayList<AssessmentPOJO>());
-            List<Assessment> assessments = assessmentRepository.getByUhidDate(uhid, year, day);
+            List<Assessment> assessments = assessmentRepository.getByUhidDate(uhid, year, month, day);
             calculatedCompliance.add(compileAssessments(uhid, assessments));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -161,97 +175,5 @@ public class AssessmentService {
         return calculatedCompliance;
     }
 
-
-    /**
-     * Converts the criteria to a format acceptable by SQL WHERE clause
-     * @param criteria Criteria Object
-     * @return string version of criteria for a SQL WHERE clause
-     */
-    private String criteriaToString(Criteria_Object criteria){
-        StringBuilder sb = new StringBuilder("");
-        String type = criteria.getType();
-        if(type == null){
-            sb.append("Boolean");
-            return sb.toString();
-        } else if(type.equalsIgnoreCase("Range")){
-            sb.append(criteria.getField_name());
-            sb.append(" < ");
-            sb.append(criteria.getTo_value());
-            sb.append(" AND ");
-            sb.append(criteria.getFrom_value());
-        } else {
-            sb.append(criteria.getField_name());
-            if(type.equalsIgnoreCase("Greater than")){
-                sb.append(" > ");
-            } else if(type.equalsIgnoreCase("Less than")){
-                sb.append(" < ");
-            } else if(type.equalsIgnoreCase("Greater than or equal")){
-                sb.append(" >= ");
-            } else if(type.equalsIgnoreCase("Less than or equal")){
-                sb.append(" <= ");
-            } else if(type.equalsIgnoreCase("Equals")){
-                sb.append(" = ");
-            } else if(type.equalsIgnoreCase("Not equals")){
-                sb.append(" != ");
-            }
-            sb.append(criteria.getFrom_value());
-        }
-        return sb.toString();
-    }
-
-
-    /**
-     * Gets the recommendations for 1 uhid (baby)
-     * @param babyDetails the birth details of the baby
-     * @return a list of CompliancePOJO's for each unique uhid which contain the results of the compliance calculation
-     */
-    public List<String> getRecommendation(RecoInputPOJO babyDetails){
-
-//        given sub_bundle_id, parent_bundle_id, uhid
-        List<String> output = new ArrayList<>();
-        try {
-            List<Long> criteriaBundleIds = criteriaBundleRepository.getBySubParent(babyDetails.getParent_bundle_id(), babyDetails.getSub_bundle_id());
-//        List<Criteria_Bundles> sub = criteriaBundleRepository.getBySub_bundle_id(babyDetails.getSub_bundle_id());
-
-            StringBuilder whereClause = new StringBuilder();
-//        for each criteria bundle id:
-            for (long criteriaBundleId : criteriaBundleIds) {
-                List<Criteria_Object> criteriaObjects = criteriaObjectRepository.getByCriteria_bundles_id(criteriaBundleId);
-
-                whereClause.append(criteriaToString(criteriaObjects.get(0)));
-                for(int i = 1; i < criteriaObjects.size(); i++){
-                    whereClause.append(" AND ");
-                    whereClause.append(criteriaToString(criteriaObjects.get(i)));
-                }
-            }
-
-            whereClause.append(" AND ");
-            whereClause.append("uhid = " + babyDetails.getUhid());
-
-
-
-//        get the criteria from 1 rule
-
-//        parse into a format to compare with uhid details (SELECT * FROM birth_details WHERE gestation <= 32 AND uhid = givenUhid)
-//
-//                ** How to know which table to query? (take the info from the criteria and search the table headers for it, then query?)
-//        if true:
-
-//        Check if there are any assessments for this recommendation?
-//
-//            ** If so how should be return only the correct recommendation? based on day, overall, etc **
-//        if not all the assessments have been done
-//
-//          compile corresponding recommendations using criteria_bundle_id
-//          add recommendations to list
-//   return the list of recommendations
-
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return output;
-    }
 
 }
